@@ -1,13 +1,17 @@
 import math
 
-G = 6.67428e-11
-TIMESTEP = 24 * 3600          # 24 Hours
+G = 6.67428e-11 # Gravitational constant
 
 # Simulates the movement of objects
 class Simulation:
-    def __init__(self, *args):
-        self._objects = [i for i in args]
+    def __init__(self, objects, timestep=24*3600):
+        self._timestep = timestep
+        self._timePassed = 0
+        self._objects = list(objects)
 
+    def set_timestep(self, timestep):
+        if timestep > 0:
+            self._timestep = timestep
 
     def calc_force(self, object1, object2):
         """
@@ -20,15 +24,15 @@ class Simulation:
         """
 
         # object2[0] returns the x coordinate of object2
-        distance = [object2[0] - self[0], object2[1] - self[1]]
+        distance = [object2[0] - object1[0], object2[1] - object1[1]]
         directDistance = math.sqrt(distance[0]**2 + distance[1]**2)
 
         if directDistance == 0:
-            raise ZeroDivisionError("Collision between two objects")
+            return
 
         # Calculate the force between the objects
-        force = G * self._mass * object2.mass / ((directDistance)**2)
-        # Calc angle the force acts at
+        force = G * object1.mass * object2.mass / ((directDistance)**2)
+        # Calculate angle the force acts at
         theta = math.degrees(math.atan2(distance[1], distance[0]))
 
         # Calculate the x and y components of each force
@@ -43,11 +47,11 @@ class Simulation:
 
         for obj in self._objects:
             # Use resultant force to move the object to a new place
-            obj.velocity[0] += obj.resultantforce[0]/obj.mass * TIMESTEP
-            obj.velocity[1] += obj.resultantforce[1]/obj.mass * TIMESTEP
+            obj.velocity[0] += obj.force[0]/obj.mass * self._timestep
+            obj.velocity[1] += obj.force[1]/obj.mass * self._timestep
 
-            obj.pos[0] += obj.velocity[0] * TIMESTEP
-            obj.pos[1] += obj.velocity[1] * TIMESTEP
+            obj.pos[0] += obj.velocity[0] * self._timestep
+            obj.pos[1] += obj.velocity[1] * self._timestep
 
             obj.reset_force()
 
@@ -65,19 +69,24 @@ class Simulation:
     
     def estimate_scale(self, screenSize):
         """Estimates the most appropriate scale for the simulation"""
+        if len(self._objects) == 1:
+            return screenSize[0]
+        # Add a bit of padding
+        screenSize = [round(screenSize[0]*0.9), round(screenSize[1]*0.9)]
+
         # Find highest and lowest x and y values
         range = 0
-        x = [None, None]
-        y = [None, None]
+        x = [self._objects[0][0], self._objects[0][0]]
+        y = [self._objects[0][1], self._objects[0][1]]
 
         for obj in self._objects:
-            if obj[0] < x[0] or x[0] == None:
+            if obj[0] < x[0]:   # Smaller x
                 x[0] = obj[0]
-            if obj[0] > x[1] or x[1] == None:
+            if obj[0] > x[1]:   # Greater x
                 x[1] = obj[0]
-            if obj[1] < y[0] or y[0] == None:
+            if obj[1] < y[0]:   # Smaller y
                 y[0] = obj[1]
-            if obj[1] > y[1] or y[1] == None:
+            if obj[1] > y[1]:   # Greater y
                 x[0] = obj[1]
         
         xRange = x[1]-x[0]
@@ -89,5 +98,21 @@ class Simulation:
             range = yRange
         
 
-        return (screenSize//2)/yRange
+        return (screenSize[0]//2)/range
+    
+
+    def iterate(self):
+        """Advances the simulation by a set time frame"""
+        # n^2 efficiency, can be improved using Barnes Hut Algorithm
+        for obj1 in self._objects:
+            for obj2 in self._objects:
+                # If not overlapping, also catches same objects
+                if obj1.pos != obj2.pos:
+                    # Calc force obj2 exertes on obj1
+                    self.calc_force(obj1, obj2)
+
+        self.move_objects()
+        self._timePassed += self._timestep
+
+
 
