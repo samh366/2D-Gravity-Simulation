@@ -51,6 +51,9 @@ class Window():
                     if event.key == pygame.K_h:
                         self._showOverlay = not self._showOverlay
 
+                    if event.key == pygame.K_F2:
+                        self._scale = self._originalScale
+
                 if event.type == pygame.MOUSEWHEEL:
                     # Scroll up
                     if event.y > 0:

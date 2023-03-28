@@ -25,13 +25,6 @@ objects = [
         color=(13, 125, 222))
 ]
 
-def randNum():
-    num = random.randint(-AU*10, AU*10)
-    while (num < AU*0.8 and num > -AU*0.8):
-        num = random.randint(-AU, AU)
-    
-    return num
-
 
 for i in range(50):
     dist = random.randint(AU*0.2, AU*1.5)
