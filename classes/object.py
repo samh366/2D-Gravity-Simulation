@@ -13,7 +13,10 @@ class Object:
         self.velocity = list(velocity)
         # Assign random color
         if color == (-1, -1, -1):
-            self.color = (random.randint(0, 255) for i in range(3))
+            self.color = (
+                random.randint(0, 255),
+                random.randint(0, 255),
+                random.randint(0, 255))
         else:
             self.color = color
 
