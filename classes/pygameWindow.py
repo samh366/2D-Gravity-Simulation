@@ -3,8 +3,6 @@ import pygame
 
 class Window():
     def __init__(self, screenSize, scale, fps=60):
-        pygame.init()
-        pygame.font.init()
         pygame.display.set_caption("Gravity Simulation  - All pairs algorithm")
         self.screen = pygame.display.set_mode(screenSize)
         self.clock = pygame.time.Clock()

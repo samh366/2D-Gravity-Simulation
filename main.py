@@ -1,8 +1,10 @@
 import random, math
+import pygame
 
 from classes.object import Object
 from classes.pygameWindow import Window
 from classes.simulation import Simulation
+from classes.configMenu import Menu
 
 TIMESTEP = 24 * 3600 // 1.5
 AU = (149.6e6 * 1000)
@@ -47,10 +49,14 @@ for i in range(50):
 
 
 def main():
-    # Init planets
-    sim = Simulation(objects, TIMESTEP)
-    window = Window((800, 800), sim.estimate_scale((800, 800)), fps=60)
-    window.simulate(sim)
+    # # Init planets
+    # sim = Simulation(objects, TIMESTEP)
+    # window = Window((800, 800), sim.estimate_scale((800, 800)), fps=60)
+    # window.simulate(sim)
+    pygame.init()
+    pygame.font.init()
+
+    window = Menu()
 
 
 if __name__ == "__main__":
