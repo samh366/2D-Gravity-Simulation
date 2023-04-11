@@ -6,11 +6,13 @@ class Object:
             mass: float,
             pos: tuple[float, float],
             velocity: tuple[float, float],
-            color: tuple[int, int, int]):
+            color: tuple[int, int, int],
+            name = ""):
 
         self.mass = mass
         self.pos = list(pos)
         self.velocity = list(velocity)
+        self.name = name
         # Assign random color
         if color == (-1, -1, -1):
             self.color = (
@@ -29,6 +31,9 @@ class Object:
 
     def reset_force(self):
         self.force = [0, 0]
+    
+    def hasName(self):
+        return self.name != ""
 
     def adjust_and_scale(self, refPoint, scale):
         """Adjusts an object's coordinates to a reference point and scales them"""

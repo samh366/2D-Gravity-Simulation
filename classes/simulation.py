@@ -4,10 +4,11 @@ G = 6.67428e-11 # Gravitational constant
 
 # Simulates the movement of objects
 class Simulation:
-    def __init__(self, objects, timestep=24*3600):
+    def __init__(self, objects, timestep=24*3600, iterations=8):
         self._timestep = timestep
         self._timePassed = 0
         self._objects = list(objects)
+        self._iterations = iterations
 
     def set_timestep(self, timestep):
         if timestep > 0:
@@ -42,29 +43,43 @@ class Simulation:
         object1.add_force(forceX, forceY)
 
     
-    def move_objects(self):
+    def move_objects(self, timestep):
         """Moves the objects in the simulation based on the forces acting on them."""
 
         for obj in self._objects:
             # Use resultant force to move the object to a new place
-            obj.velocity[0] += obj.force[0]/obj.mass * self._timestep
-            obj.velocity[1] += obj.force[1]/obj.mass * self._timestep
+            obj.velocity[0] += obj.force[0]/obj.mass * timestep
+            obj.velocity[1] += obj.force[1]/obj.mass * timestep
 
-            obj.pos[0] += obj.velocity[0] * self._timestep
-            obj.pos[1] += obj.velocity[1] * self._timestep
+            obj.pos[0] += obj.velocity[0] * timestep
+            obj.pos[1] += obj.velocity[1] * timestep
 
             obj.reset_force()
 
-    # Use a generator to request object data in the simulation
-    def objects(self, refPoint, scale):
+
+    def scaled_objects(self, refPoint, scale):
         """
         A generator to adjust each objects coordinates to a reference point and to scale,
-        returning this value and the color of the object
+        returning this value and the color of the object.
+        Also returns an index
         """
-        for obj in self._objects:
-            yield (
+        for index, obj in enumerate(self._objects):
+            yield index, (
                     obj.adjust_and_scale(refPoint, scale),
                     obj.color)
+            
+    
+    def object_data(self):
+        """Just returns the raw object data"""
+        for obj in self._objects:
+            yield obj
+
+    
+    def get_object(self, index):
+        """Return data about a specific object"""
+        if index < 0 or index >= len(self._objects):
+            return None
+        return self._objects[index]
             
     
     def estimate_scale(self, screenSize):
@@ -100,19 +115,26 @@ class Simulation:
 
         return (screenSize[0]//2)/range
     
+    def num_objects(self) -> int:
+        """Returns the number of objects being simulated"""
+        return len(self._objects)
+    
 
     def iterate(self):
         """Advances the simulation by a set time frame"""
-        # n^2 efficiency, can be improved using Barnes Hut Algorithm
-        for obj1 in self._objects:
-            for obj2 in self._objects:
-                # If not overlapping, also catches same objects
-                if obj1.pos != obj2.pos:
-                    # Calc force obj2 exertes on obj1
-                    self.calc_force(obj1, obj2)
+        # Iterate x number of times for greater accuracy
+        timestep = self._timestep // self._iterations
+        for i in range(self._iterations):
+            # n^2 efficiency, can be improved using Barnes Hut Algorithm
+            for obj1 in self._objects:
+                for obj2 in self._objects:
+                    # If not overlapping, also catches same objects
+                    if obj1.pos != obj2.pos:
+                        # Calc force obj2 exertes on obj1
+                        self.calc_force(obj1, obj2)
 
-        self.move_objects()
-        self._timePassed += self._timestep
+            self.move_objects(timestep)
+            self._timePassed += timestep
 
 
 
