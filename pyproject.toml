@@ -1,4 +1,4 @@
 [project]
-name="gravity-sumulation"
+name="gravity_simulation"
 version="1.0.0"
 description="A package to create simple 2D gravity simulations"

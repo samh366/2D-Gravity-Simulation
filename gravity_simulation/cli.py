@@ -1,8 +1,6 @@
 import argparse
 
-
-def main():
+def handle_cli():
     parser = argparse.ArgumentParser()
     parser.add_argument("hello")
-    args = parser.parse_args()
-    print(args)
+    return parser.parse_args()
