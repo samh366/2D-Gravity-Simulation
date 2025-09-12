@@ -2,3 +2,5 @@
 name="gravity_simulation"
 version="1.0.0"
 description="A package to create simple 2D gravity simulations"
+readme = "README.md"
+requires-python = ">=3.12"
