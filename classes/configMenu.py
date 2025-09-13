@@ -1,7 +1,6 @@
 import json
 import os
-from tkinter import (Button, Entry, Frame, Label, Menu, OptionMenu, StringVar,
-                     Tk, filedialog, messagebox)
+from tkinter import Button, Entry, Frame, Label, Menu, OptionMenu, StringVar, Tk, filedialog, messagebox
 
 import pygame
 
@@ -21,20 +20,20 @@ class ConfigMenu:
 
         # Store scales for the values
         self._scales = {
-            "m":1,
-            "km":1000,
-            "AU":149.6e6 * 1000,
-            "m/s":1,
-            "km/s":1000,
-            "AU/s":149.6e6 * 1000,
-            "g":0.001,
-            "kg":1,
-            "Moons":7.346e22,
-            "Earths":5.9722e24,
-            "Jupiters":1_898.13e24,
-            "Suns":	1_988_500e24,
+            "m": 1,
+            "km": 1000,
+            "AU": 149.6e6 * 1000,
+            "m/s": 1,
+            "km/s": 1000,
+            "AU/s": 149.6e6 * 1000,
+            "g": 0.001,
+            "kg": 1,
+            "Moons": 7.346e22,
+            "Earths": 5.9722e24,
+            "Jupiters": 1_898.13e24,
+            "Suns": 1_988_500e24,
             "10xSun": 1_988_500e25,
-            "100xSun": 1_988_500e26
+            "100xSun": 1_988_500e26,
         }
 
     def open(self):
@@ -46,36 +45,57 @@ class ConfigMenu:
 
         Label(self.win, text="Simulation Config", font=("Calibri 20")).pack(pady=15)
         # Run simulation button
-        Button(self.win, font=("Calibri 11"), bg="#19d42f", activebackground="#4fe861", text="Run", command=self.run).pack()
+        Button(
+            self.win, font=("Calibri 11"), bg="#19d42f", activebackground="#4fe861", text="Run", command=self.run
+        ).pack()
 
         # Timestep input
         self.timeStepFrame = Frame()
         self.timeStepFrame.pack()
-        Label(self.timeStepFrame, text="Time per frame (60fps): ", font=("Calibri 13")).grid(column=0, row=0, sticky="W")
+        Label(self.timeStepFrame, text="Time per frame (60fps): ", font=("Calibri 13")).grid(
+            column=0, row=0, sticky="W"
+        )
         self.timeStepData = Entry(self.timeStepFrame, font=("Calibri 11"), width=12)
         self.timeStepData.insert(0, "0.5")
         self.timeStepData.grid(column=1, row=0, sticky="W")
         self.timeStepVar = StringVar(self.win)
         self.timeStepVar.set("Days")
-        OptionMenu(self.timeStepFrame, self.timeStepVar, "Seconds", "Minutes", "Hours", "Days", "Weeks", "Years", "1000 years", "Mil years").grid(column=2, row=0, sticky="W")
+        OptionMenu(
+            self.timeStepFrame,
+            self.timeStepVar,
+            "Seconds",
+            "Minutes",
+            "Hours",
+            "Days",
+            "Weeks",
+            "Years",
+            "1000 years",
+            "Mil years",
+        ).grid(column=2, row=0, sticky="W")
 
         # Iterations per frame input
         self.iterationsFrame = Frame()
         self.iterationsFrame.pack()
-        Label(self.iterationsFrame, text="Iterations per frame: ", font=("Calibri 13")).grid(column=0, row=0, sticky="W")
+        Label(self.iterationsFrame, text="Iterations per frame: ", font=("Calibri 13")).grid(
+            column=0, row=0, sticky="W"
+        )
         self.iterationsData = Entry(self.iterationsFrame, font=("Calibri 11"), width=5)
         self.iterationsData.insert(0, "8")
         self.iterationsData.grid(column=1, row=0, sticky="W")
-        
 
         # Add object button
-        self.addObjectButton = Button(self.win, font=("Calibri 11"), bg="#119ad9", activebackground="#42b5eb", text="+ Add Object", command=self.add_frame)
+        self.addObjectButton = Button(
+            self.win,
+            font=("Calibri 11"),
+            bg="#119ad9",
+            activebackground="#42b5eb",
+            text="+ Add Object",
+            command=self.add_frame,
+        )
         self.addObjectButton.pack()
-
 
         self.objectFrame = ScrollFrame(self.win)
         self.objectFrame.pack(side="top", fill="both", expand=True)
-
 
         # Forces the object frame to resize when nothing is in it
         # Frame(self.objectFrame, width=1, height=1).pack()
@@ -97,14 +117,14 @@ class ConfigMenu:
         """Gets the data from the timestep inputs"""
         # Scales
         scales = {
-            "Seconds" : 1,
-            "Minutes" : 60,
-            "Hours" : 3600,
-            "Days" : 86400,
-            "Weeks" : 86400*7,
-            "Years" : 86400*7*52,
-            "1000 years" : 86400*7*52*1000,
-            "Mil years" : 86400*7*52*1_000_000
+            "Seconds": 1,
+            "Minutes": 60,
+            "Hours": 3600,
+            "Days": 86400,
+            "Weeks": 86400 * 7,
+            "Years": 86400 * 7 * 52,
+            "1000 years": 86400 * 7 * 52 * 1000,
+            "Mil years": 86400 * 7 * 52 * 1_000_000,
         }
         output = float(self.timeStepData.get())
         output *= scales[self.timeStepVar.get()]
@@ -117,7 +137,7 @@ class ConfigMenu:
         """Adds a frame and all its appropriate elements"""
         frame = Frame(self.objectFrame.viewPort, highlightbackground="black", highlightthickness=1)
         frame.pack()
-        frameData = {"frame":frame, "mass":[], "pos":[], "vel":[], "col":[]}
+        frameData = {"frame": frame, "mass": [], "pos": [], "vel": [], "col": []}
         frameData["id"] = len(self.frames)
         self._object_count += 1
         # Title
@@ -125,7 +145,9 @@ class ConfigMenu:
         frameData["name"].grid(column=0, row=0, columnspan=3)
         frameData["name"].insert(0, "Object " + str(self._object_count))
         # Line
-        Frame(frame, height=1, width=400, highlightbackground="black", highlightthickness=1).grid(column=0, row=1, columnspan=3, pady=5)
+        Frame(frame, height=1, width=400, highlightbackground="black", highlightthickness=1).grid(
+            column=0, row=1, columnspan=3, pady=5
+        )
         # Mass
         leftFrame = Frame(frame)
         leftFrame.grid(column=0, row=2)
@@ -139,7 +161,7 @@ class ConfigMenu:
         Label(leftFrame, text="Position y", font=("Calibri 11")).grid(column=0, row=2)
         frameData["pos"].append(Entry(leftFrame, font=("Calibri 11"), width=15))
         frameData["pos"][-1].grid(column=1, row=2, sticky="W")
-        # Velocity 
+        # Velocity
         rightFrame = Frame(frame)
         rightFrame.grid(column=2, row=2)
         Label(rightFrame, text="Velocity x", font=("Calibri 11")).grid(column=0, row=0)
@@ -163,7 +185,9 @@ class ConfigMenu:
         # Mass
         massVar = StringVar(self.win)
         massVar.set("kg")
-        OptionMenu(leftFrame, massVar, "g", "kg", "Moons", "Earths", "Jupiters", "Suns", "10xSun", "100xSun").grid(column=2, row=0, sticky="W")
+        OptionMenu(leftFrame, massVar, "g", "kg", "Moons", "Earths", "Jupiters", "Suns", "10xSun", "100xSun").grid(
+            column=2, row=0, sticky="W"
+        )
         frameData["mass"].append(massVar)
         # Pos
         posVarX = StringVar(self.win)
@@ -186,14 +210,18 @@ class ConfigMenu:
 
         # Remove button
         frameData["remove"] = Button(
-                                leftFrame, font=("Calibri 11"),
-                                bg="#eb4034", activebackground="#f06e65",
-                                text="Remove", highlightcolor="#f06e65",
-                                command=lambda: self.remove_frame_by_index(frameData["id"]))
+            leftFrame,
+            font=("Calibri 11"),
+            bg="#eb4034",
+            activebackground="#f06e65",
+            text="Remove",
+            highlightcolor="#f06e65",
+            command=lambda: self.remove_frame_by_index(frameData["id"]),
+        )
         frameData["remove"].grid(column=0, row=3, columnspan=3)
 
         self.frames.append(frameData)
-    
+
     # Should only be called on the topmost frame
     def remove_frame_by_index(self, index):
         # Handles any child frames that contain their own index
@@ -212,7 +240,7 @@ class ConfigMenu:
 
     def reorder_objects(self):
         for index, val in enumerate(self.frames):
-            # val["name"].delete(0, END) 
+            # val["name"].delete(0, END)
             # val["name"].insert(0, "Object " + str(index+1))
             val["id"] = index
 
@@ -232,7 +260,7 @@ class ConfigMenu:
 
         for frame in self.frames:
             data = self.getInputFromBoxes(frame)
-            
+
             try:
                 translated = self.translate_parameters(data)
                 if translated != None:
@@ -240,9 +268,12 @@ class ConfigMenu:
                 else:
                     return None
             except FileNotFoundError:
-                self.handle_input_error(frame["name"].get(), "Invalid data format, use integers for colours\nand decimals for everything else!")
+                self.handle_input_error(
+                    frame["name"].get(),
+                    "Invalid data format, use integers for colours\nand decimals for everything else!",
+                )
                 return None
-        
+
         # Get timestep
         try:
             output.append(self.get_timestep())
@@ -257,15 +288,12 @@ class ConfigMenu:
 
         return output
 
-    
     def translate_parameters(self, data) -> tuple[float]:
         """Converts values entered by the user to values suggest by scale boxes"""
         output = []
         for i, section in enumerate(data):
             if isinstance(section, list):
-                output.append(
-                    float(section[0]) * self._scales[section[1]]
-                )
+                output.append(float(section[0]) * self._scales[section[1]])
             elif i != 8:
                 if int(section) > 255 or int(section) < -1:
                     self.handle_input_error(data[-1][0], "Invalid color value!")
@@ -280,29 +308,24 @@ class ConfigMenu:
         """Handles errors found when trying to run the values inputted"""
         messagebox.showerror("Input Error", "Error on '{}'\n{}".format(name, error))
 
-    
     def run(self):
         data = self.export_parameters()
         if data != None:
             self.simulation = Simulation(
                 objects=(
-                    Object(
-                        mass=i[0],
-                        pos=(i[1], i[2]),
-                        velocity=(i[3], i[4]),
-                        color=(i[5], i[6], i[7]),
-                        name=i[8]
-                        )
-                    for i in data if isinstance(i, list)),
+                    Object(mass=i[0], pos=(i[1], i[2]), velocity=(i[3], i[4]), color=(i[5], i[6], i[7]), name=i[8])
+                    for i in data
+                    if isinstance(i, list)
+                ),
                 timestep=data[-2],
-                iterations=data[-1])
+                iterations=data[-1],
+            )
 
             pygame.init()
             pygame.font.init()
             self.pygameWindow = Window(screenSize=(800, 800), scale=self.simulation.estimate_scale((800, 800)))
             self.pygameWindow.simulate(self.simulation)
 
-    
     def load(self) -> bool:
         # Make save folder
         saveFolder = os.path.join(self._directory, "saves")
@@ -310,16 +333,18 @@ class ConfigMenu:
             os.makedirs(saveFolder)
 
         # Open file explorer
-        file = filedialog.askopenfile(mode="r", defaultextension=".txt", initialdir=saveFolder, filetypes=(("Text file", "*.txt"), ))
+        file = filedialog.askopenfile(
+            mode="r", defaultextension=".txt", initialdir=saveFolder, filetypes=(("Text file", "*.txt"),)
+        )
         if file == None:
             return
-        
+
         data = json.loads(file.read())
 
         # Remove all frames
         while len(self.frames) != 0:
             self.remove_frame_by_index(0)
-        
+
         # Add correct number of frames, filling in details
         for i, frameData in enumerate(data):
             # Add frame
@@ -346,10 +371,9 @@ class ConfigMenu:
             # Name
             self.frames[i]["name"].delete(0, "end")
             self.frames[i]["name"].insert(0, frameData[8])
-        
+
         return True
-        
-    
+
     def save(self):
         """Saves the values stored in input boxes to a file"""
         output = []
@@ -367,12 +391,13 @@ class ConfigMenu:
             os.makedirs(saveFolder)
 
         # Open file explorer
-        file = filedialog.asksaveasfile(mode="w", defaultextension=".txt", initialdir=saveFolder, filetypes=(("Text file", "*.txt"), ))
+        file = filedialog.asksaveasfile(
+            mode="w", defaultextension=".txt", initialdir=saveFolder, filetypes=(("Text file", "*.txt"),)
+        )
         if file == None:
             return
         file.write(json.dumps(output, indent=4))
 
-    
     def getInputFromBoxes(self, frame):
         """Given a frame from ObjectFrame, gets the inputs out of the Entry boxes"""
         data = [
@@ -384,7 +409,7 @@ class ConfigMenu:
             frame["col"][0].get(),
             frame["col"][1].get(),
             frame["col"][2].get(),
-            frame["name"].get()
+            frame["name"].get(),
         ]
 
         # Remove leading and trailing spaces
@@ -395,7 +420,4 @@ class ConfigMenu:
             else:
                 data[i] = data[i].strip()
 
-
         return data
-
-
