@@ -3,5 +3,5 @@ from gravity_sim.simulation import Simulation
 
 def main():
     args = handle_cli()
-    Simulation()
-    print(args)
+    runner = SimulationRunner(args.config)
+    runner.run()
