@@ -13,6 +13,7 @@ lint.ignore = [
     "D407", # Section dashes provides no value
     "D212", # Multi-line docstring summary should start at the first line
     "D413", # Missing blank line after last section
+    "D100", # Docstrings in public modules
     ]
 
 # Allow autofix for all enabled rules (when `--fix`) is provided.
