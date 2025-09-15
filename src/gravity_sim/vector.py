@@ -1,10 +1,12 @@
+import math
+
 class Vector:
     """A Vector class."""
 
     def __init__(self, *args):
         """Initialise a vector given an x and y values."""
         if len(args) == 0:
-            self.values = (0, 0)
+            self.values = (0.0, 0.0)
         else:
             self.values = tuple(args)
 
@@ -37,13 +39,10 @@ class Vector:
         Returns:
             bool: True if equal, False otherwise.
         """
-        if not isinstance(object, Vector):
+        if not isinstance(other, Vector):
             return False
-        if other.x != self.x:
-            return False
-        if other.y != self.y:
-            return False
-        return True
+        equal = (math.isclose(a, b) for a, b in zip(self, other))
+        return all(equal)
 
     def __add__(self, other) -> "Vector":
         """Add a Vector or constant to this vector.
@@ -55,11 +54,10 @@ class Vector:
             Vector: A vector with the new values.
         """
         if isinstance(other, Vector):
-            return Vector(a + b for a, b in zip(self, other))
-        elif isinstance(other, (float, int)):
-            return Vector(a + other for a in self)
-        else:
-            raise ValueError(f"Addition not supported between {self.__class__} and {other.__class__}")
+            return Vector(*tuple(a + b for a, b in zip(self, other)))
+        if isinstance(other, (float, int)):
+            return Vector(*tuple(a + other for a in self))
+        raise ValueError(f"Addition not supported between {self.__class__} and {other.__class__}")
 
     def __sub__(self, other) -> "Vector":
         """Subtract a Vector or constant from this vector.
@@ -71,8 +69,7 @@ class Vector:
             Vector: A vector with the new values.
         """
         if isinstance(other, Vector):
-            return Vector(a - b for a, b in zip(self, other))
-        elif isinstance(other, (float, int)):
-            return Vector(a - other for a in self)
-        else:
-            raise ValueError(f"Subtraction not supported between {self.__class__} and {other.__class__}")
+            return Vector(*tuple(a - b for a, b in zip(self, other)))
+        if isinstance(other, (float, int)):
+            return Vector(*tuple(a - other for a in self))
+        raise ValueError(f"Subtraction not supported between {self.__class__} and {other.__class__}")
