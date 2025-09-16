@@ -7,6 +7,8 @@ class Vector:
         """Initialise a vector given an x and y values."""
         if len(args) == 0:
             self.values = (0.0, 0.0)
+        elif len(args) == 1 and hasattr(args[0], "__iter__"):
+            self.values = tuple(args[0])
         else:
             self.values = tuple(args)
 
