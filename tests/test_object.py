@@ -16,11 +16,11 @@ class TestObject:
             "satellites": [
                 {
                     "name": "Moon",
-                    "mass": 5.972e24,
-                    "radius": 6371,
-                    "position": [149597870.7, 0],
-                    "velocity": [0, 29780],
-                    "color": [0, 100, 255]
+                    "mass": 5972,
+                    "radius": 637,
+                    "position": [10000.7, -10000],
+                    "velocity": [0, -29780],
+                    "color": [255, 100, 255]
                 }
             ]
         }
