@@ -2,6 +2,8 @@ import random
 import re
 from dataclasses import dataclass, field
 from gravity_sim.vector import Vector
+from gravity_sim.simulation import Simulation
+from yaml import CSafeLoader, load
 
 @dataclass
 class Color:
@@ -68,71 +70,31 @@ class Color:
         """Return a string representation of the color."""
         return str(self.as_tuple())
 
-dict_object = {
-    "name": "Earth",
-    "mass": 5.972e24,
-    "radius": 6371,
-    "position": [149597870.7, 0],
-    "velocity": [0, 29780],
-    "color": [0, 100, 255],
-    "satellites": [
-        {
-            "name": "Moon",
-            "mass": 5.972e24,
-            "radius": 6371,
-            "position": [149597870.7, 0],
-            "velocity": [0, 29780],
-            "color": [0, 100, 255]
-        }
-    ]
-}
-
-@dataclass
-class Object:
-    """Represents an object in a simulation."""
-    name: str
-    mass: int
-    radius: int
-    position: Vector = field(default_factory=Vector)
-    velocity: Vector = field(default_factory=Vector)
-    color: Color = field(default_factory=Color.random_colour)
-    satellites: list["Object"]  = field(default_factory=list)
-
-    @classmethod
-    def from_dict(cls, data: dict):
-        """Return an object from the provided data."""
-        return cls(
-            name=data["name"],
-            mass=data["mass"],
-            radius=data["radius"],
-            position=Vector(data["position"]),
-            velocity=Vector(data["velocity"]),
-            color=Color.from_iterable(data.get("color")),
-            satellites=[cls.from_dict(obj) for obj in data.get("satellites", [])]
-        )
-
-
-@dataclass
-class Config:
-    """Dataclass to store the starting config of a simulation."""
-
-    @classmethod
-    def from_dict():
-        """Loads a config"""
-
-
 class ConfigLoader:
     """Loads simulation configs from various types of config files."""
 
     @staticmethod
-    def load_file(filename: str) -> Config:
-        if re.search(".*.y*ml", filename):
+    def load_file(filename: str) -> Simulation:
+        """Return a simulation object loaded from the data in the given file.
+
+        Args:
+            filename (str): The filename, should end in .yaml or .yml.
+
+        Returns:
+            Simulation: A Simulation object with the loaded data.
+        """
+        if re.search(r".*\.ya?ml", filename):
             return ConfigLoader.from_yaml(filename)
 
-    @staticmethod
-    def from_yaml(filename: str):
-        pass
+        raise ValueError(f"Unable to load data from {filename}: File should be .yaml.")
 
     @staticmethod
-    def from_json() -> Config:
+    def from_yaml(filename: str) -> Simulation:
+        """Load data from a YAML file into a Simulation object."""
+        with open(filename, "r") as yaml_file:
+            data = load(yaml_file, Loader=CSafeLoader)
+        return Simulation.from_dict(data)
+
+    @staticmethod
+    def from_json() -> Simulation:
         pass
