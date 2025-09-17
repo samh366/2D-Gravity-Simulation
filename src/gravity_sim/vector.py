@@ -12,6 +12,24 @@ class Vector:
         else:
             self.values = tuple(args)
 
+    @classmethod
+    def from_magnitude_theta(self, magnitude: float, theta: float) -> "Vector":
+        """Return an x, y Vector object from a given magnitude and theta value in radians.
+
+        Args:
+            magnitude (float): Magnitude of the vector.
+            theta (float): Angle of the vector in radians.
+
+        Returns:
+            Vector: A 2D vector calculated from the given magnitude and theta value,
+        """
+        return Vector(
+            *(
+                math.cos(theta) * magnitude,
+                math.sin(theta) * magnitude,
+            )
+        )
+
     def __iter__(self):
         """Iterate through the values in the vector."""
         return self.values.__iter__()
@@ -75,3 +93,35 @@ class Vector:
         if isinstance(other, (float, int)):
             return Vector(*tuple(a - other for a in self))
         raise ValueError(f"Subtraction not supported between {self.__class__} and {other.__class__}")
+
+    def __truediv__(self, other: float) -> "Vector":
+        """Divide each value in the vector by a constant.
+
+        Args:
+            other (float): _description_
+
+        Returns:
+            Vector: _description_
+        """
+        if isinstance(other, (float, int)):
+            return Vector(*tuple(a / b for a, b in zip(self, other)))
+
+        raise ValueError(f"Division not supported between {self.__class__} and {other.__class__}")
+
+    def __mul__(self, other: float) -> "Vector":
+        """Multiply each value in the vector by a constant.
+
+        Args:
+            other (float): _description_
+
+        Returns:
+            Vector: _description_
+        """
+        if isinstance(other, (float, int)):
+            return Vector(*tuple(a * b for a, b in zip(self, other)))
+
+        raise ValueError(f"Multiplication not supported between {self.__class__} and {other.__class__}")
+
+    def __rmul__(self, other) -> "Vector":
+        """Right multplication."""
+        return self.__mul__(other)
