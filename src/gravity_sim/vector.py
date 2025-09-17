@@ -104,7 +104,7 @@ class Vector:
             Vector: _description_
         """
         if isinstance(other, (float, int)):
-            return Vector(*tuple(a / b for a, b in zip(self, other)))
+            return Vector(*tuple(a / other for a in self))
 
         raise ValueError(f"Division not supported between {self.__class__} and {other.__class__}")
 
@@ -118,7 +118,7 @@ class Vector:
             Vector: _description_
         """
         if isinstance(other, (float, int)):
-            return Vector(*tuple(a * b for a, b in zip(self, other)))
+            return Vector(*tuple(a * other for a in self))
 
         raise ValueError(f"Multiplication not supported between {self.__class__} and {other.__class__}")
 
