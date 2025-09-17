@@ -117,10 +117,5 @@ class Object:
         Args:
             timestep (float): Time passed in seconds.
         """
-        self.velocity[0] += self.force[0] / self.mass * timestep
-        self.velocity[1] += self.force[1] / self.mass * timestep
-
-        self.pos[0] += self.velocity[0] * timestep
-        self.pos[1] += self.velocity[1] * timestep
-
-        self.reset_force()
+        self.velocity += self.force / self.mass * timestep
+        self.position += self.velocity * timestep
