@@ -1,4 +1,4 @@
-from gravity_sim.config_loader import Object
+from gravity_sim.object import Object
 from pytest import raises
 
 
