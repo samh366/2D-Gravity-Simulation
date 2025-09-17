@@ -58,12 +58,14 @@ class TestVector:
             pytest.param(Vector(2.1, 3.2), Vector(1.5, 6.6), (3.6, 9.8)),
             pytest.param(Vector(5, 6.5), Vector(-9, -4.4), (-4, 2.1)),
             pytest.param(Vector(5, 2.7), Vector(0, 0), (5, 2.7)),
+            pytest.param(Vector(5, 2.7), 10, (15, 12.7)),
         ],
         ids=[
             "integer addition",
             "float addition",
             "negative addition",
             "zero addition",
+            "constant addition"
         ]
     )
     def test_addition(self, a: Vector, b: Vector, expected: Vector):
@@ -80,12 +82,14 @@ class TestVector:
             pytest.param(Vector(2.1, 3.2), Vector(1.5, 6.6), (0.6, -3.4)),
             pytest.param(Vector(5, 6.5), Vector(-9, -4.4), (14, 10.9)),
             pytest.param(Vector(5, 2.7), Vector(0, 0), (5, 2.7)),
+            pytest.param(Vector(15, 6.6), 10, (5, -3.4)),
         ],
         ids=[
             "integer subtraction",
             "float subtraction",
             "negative subtraction",
             "zero subtraction",
+            "constant subtraction",
         ]
     )
     def test_subtraction(self, a: Vector, b: Vector, expected: Vector):
@@ -109,3 +113,13 @@ class TestVector:
         result = a.__eq__(b)
 
         assert result == expected
+
+    def test_multiple_operations(self):
+        """Multiple operations should be able to be applied to a vector."""
+        vector1 = Vector(1, 1)
+        vector2 = Vector(2, 3)
+
+        vector1 += vector2 * 10 / 5
+
+        expected = Vector(5, 7)
+        assert self.are_lists_close(vector1, expected)
