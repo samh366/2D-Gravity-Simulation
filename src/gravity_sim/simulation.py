@@ -2,8 +2,17 @@ from gravity_sim.object import Object
 from gravity_sim.vector import Vector
 import math
 
+
 class Simulation:
-    def __init__(self, name: str, timestep: int, objects: list[Object], grav_constant: float = 6.6743e-11, description: str = None):
+    def __init__(
+        self,
+        name: str,
+        timestep: int,
+        objects: list[Object],
+        grav_constant: float = 6.6743e-11,
+        description: str = None,
+        render: bool = False,
+    ):
         self.name = name
         self.timestep = timestep
         self.objects = objects
@@ -41,7 +50,7 @@ class Simulation:
             name=dictionary["name"],
             timestep=dictionary["timestep"],
             objects=dictionary["objects"],
-            description=dictionary.get("description")
+            description=dictionary.get("description"),
         )
 
     def calculate_forces(self):
@@ -65,7 +74,7 @@ class Simulation:
             return
 
         force = self.grav_constant * object1.mass * object2.mass / sqrDistance
-        theta = math.atan2(distance[1], distance[0]) # Calculate angle the force acts at
+        theta = math.atan2(distance[1], distance[0])  # Calculate angle the force acts at
         force_vector = Vector.from_magnitude_theta(magnitude=force, theta=theta)
 
         object1.add_force(force_vector)
@@ -80,6 +89,10 @@ class Simulation:
         """Step forward the simulation by one timstep."""
         self.calculate_forces()
         self.move_objects()
+
+    def run(self):
+        while True:
+            self.step()
 
     def is_running() -> bool:
         pass
