@@ -1,9 +1,7 @@
 from gravity_sim.cli import handle_cli
-from gravity_sim.simulation import Simulation
-from gravity_sim.config_loader import ConfigLoader
+from gravity_sim.simulation_runner import SimulationRunner
 
 
 def main():
     args = handle_cli()
-    sim = ConfigLoader.load_file(args.config)
-    sim.run()
+    SimulationRunner.run(args.config_file)

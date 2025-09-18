@@ -91,6 +91,7 @@ class Simulation:
         self.move_objects()
 
     def run(self):
+        """Run the simulation."""
         while True:
             self.step()
 
