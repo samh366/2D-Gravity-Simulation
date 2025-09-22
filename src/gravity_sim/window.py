@@ -1,19 +1,24 @@
 import pygame
 from gravity_sim.vector import Vector
 from gravity_sim.simulation import Simulation
+from gravity_sim.object import Color
 
 
 class Window:
     """Pygame window to display simulation."""
+
     def __init__(self, simulation: Simulation):
         self.simulation = simulation
-        self.screen_size = Vector(600, 600)
+        self.width, self.height = self.screen_size
         self.scale = self.estimate_scale()
+
+        self._fps = 60
+        self.screen_size = Vector(600, 600)
+        self.camera_pos = Vector(0, 0)
 
         pygame.display.set_caption("Gravity Simulation")
         self.screen = pygame.display.set_mode(size=(600, 600))
         self.clock = pygame.time.Clock()
-
 
     def run(self):
         while 1:
@@ -27,13 +32,43 @@ class Window:
             if event.type == pygame.QUIT:
                 return False
 
+            if event.type == pygame.MOUSEWHEEL:
+                self.handle_zoom(event.y)
+
         self.simulation.step()
         self.render_simulation()
 
+        pygame.display.update()
+        self.clock.tick(self._fps)
+
         return True
 
+    def handle_zoom(self, y: int) -> None:
+        """Zoom in or out based on the mouse wheel movement.
+
+        Args:
+            y (int): Y value of the mouse wheel event.
+        """
+        if y > 0:
+            self.zoomIn()
+        elif y < 0:
+            self.zoomOut()
+
     def render_simulation(self):
-        pass
+        """Draw all the objects on the screen."""
+        for object in self.simulation.objects:
+            pos = self.scale_point(object.get_position(), self.camera_pos, self.scale)
+            self.draw_point(pos, object.color)
+
+    def draw_point(self, position: Vector, color: Color) -> None:
+        """Draw a point on the screen at the given position, centering the point on the screen.
+
+        Args:
+            position (Vector): The position to draw the point.
+            color (Color): Color of the point.
+        """
+        position += Vector(self.width // 2, self.height // 2)
+        pygame.draw.circle(surface=self.screen, color=tuple(color), position=tuple(position), radius=8)
 
     def scale_point(self, point: Vector, refPoint: Vector, scale: float) -> Vector:
         """Scale a point to render to the screen.
