@@ -123,3 +123,12 @@ class TestVector:
 
         expected = Vector(5, 7)
         assert self.are_lists_close(vector1, expected)
+
+    def test_to_tuple(self):
+        """Vectors should be able to be cast to tuples."""
+        vector = Vector(1, 2)
+
+        actual = tuple(vector)
+        expected = (1, 2)
+
+        assert actual == expected
