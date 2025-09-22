@@ -65,7 +65,7 @@ class Color:
 
     def __str__(self) -> str:
         """Return a string representation of the color."""
-        return str(self.as_tuple())
+        return str(tuple(self))
 
 
 @dataclass
