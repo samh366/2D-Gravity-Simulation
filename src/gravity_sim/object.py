@@ -84,9 +84,14 @@ class Object:
     @classmethod
     def from_dict(cls, data: dict):
         """Return an object from the provided data."""
+        try:
+            mass = float(data["mass"])
+        except ValueError:
+            raise ValueError(f"Invalid mass value in object: {mass}")
+
         return cls(
             name=data["name"],
-            mass=data["mass"],
+            mass=mass,
             radius=data["radius"],
             position=Vector(data["position"]),
             velocity=Vector(data["velocity"]),
