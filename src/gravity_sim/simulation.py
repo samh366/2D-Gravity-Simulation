@@ -49,7 +49,7 @@ class Simulation:
         return cls(
             name=dictionary["name"],
             timestep=dictionary["timestep"],
-            objects=dictionary["objects"],
+            objects=[Object.from_dict(obj) for obj in dictionary["objects"]],
             description=dictionary.get("description"),
         )
 
