@@ -9,18 +9,19 @@ class Window:
 
     def __init__(self, simulation: Simulation):
         self.simulation = simulation
-        self.width, self.height = self.screen_size
-        self.scale = self.estimate_scale()
 
         self._fps = 60
         self.screen_size = Vector(600, 600)
+        self.width, self.height = self.screen_size
         self.camera_pos = Vector(0, 0)
+        self.scale = self.estimate_scale()
 
         pygame.display.set_caption("Gravity Simulation")
         self.screen = pygame.display.set_mode(size=(600, 600))
         self.clock = pygame.time.Clock()
 
     def run(self):
+        """Start the window to render the simulation."""
         while 1:
             result = self.update()
             if not result:
@@ -28,6 +29,11 @@ class Window:
         pygame.quit()
 
     def update(self) -> bool:
+        """Update loop for window and simulation logic.
+
+        Returns:
+            bool: True if the simulation should continue, False otherwise.
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
@@ -35,6 +41,7 @@ class Window:
             if event.type == pygame.MOUSEWHEEL:
                 self.handle_zoom(event.y)
 
+        self.screen.fill((0, 0, 0))
         self.simulation.step()
         self.render_simulation()
 
@@ -68,7 +75,9 @@ class Window:
             color (Color): Color of the point.
         """
         position += Vector(self.width // 2, self.height // 2)
-        pygame.draw.circle(surface=self.screen, color=tuple(color), position=tuple(position), radius=8)
+        print(position)
+        print(f"Scale {self.scale}")
+        pygame.draw.circle(surface=self.screen, color=tuple(color), center=tuple(position), radius=8)
 
     def scale_point(self, point: Vector, refPoint: Vector, scale: float) -> Vector:
         """Scale a point to render to the screen.
@@ -85,17 +94,15 @@ class Window:
         """
         point -= refPoint
         point *= scale
-        point[0] = point[0] * -1
-
-        return point
+        return Vector(point[0] * -1, point[1])
 
     def zoomIn(self):
         """Increase the scale of the simulation."""
-        self._scale *= 1.2
+        self.scale *= 1.2
 
     def zoomOut(self):
         """Decrease the scale of the simulation."""
-        self._scale *= 0.8
+        self.scale *= 0.8
 
     def estimate_scale(self) -> float:
         """Estimate an initial scale for the simulation based on the objects furthest apart.
