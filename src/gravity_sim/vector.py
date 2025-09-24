@@ -38,9 +38,9 @@ class Vector:
         """Return the number of dimensions the vector has."""
         return len(self.values)
 
-    def __getitem__(self, key):
+    def __getitem__(self, id):
         """Return the requested item."""
-        return self.values[key]
+        return self.values[id]
 
     def __repr__(self):
         """Return a text representation of the vector."""
