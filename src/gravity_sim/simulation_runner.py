@@ -1,11 +1,11 @@
 from gravity_sim.config_loader import ConfigLoader
-from gravity_sim.simulation import Simulation
 from gravity_sim.window import Window
 
 class SimulationRunner:
     """Loads and starts simulations."""
 
-    def run(self, config_file: str):
+    @staticmethod
+    def run(config_file: str):
         """Load a simulation from the given config file and display it in a window.
 
         Args:
