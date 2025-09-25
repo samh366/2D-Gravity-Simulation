@@ -1,0 +1,16 @@
+name: "Simulation 1"
+timestep: 1000
+description: "A realistic solar system simulation"
+objects:
+  - name: Earth
+    mass: 5.972e24
+    radius: 637
+    position: [0, 0]
+    velocity: [0, -9999]
+    color: [0, 100, 255]
+  - name: Sun
+    mass: 5.972e27
+    radius: 637
+    position: [5599999999, 0]
+    velocity: [0, 0]
+    color: [0, 100, 255]
