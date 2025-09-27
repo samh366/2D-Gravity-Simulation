@@ -4,13 +4,13 @@ description: "A realistic solar system simulation"
 objects:
   - name: Earth
     mass: 5.972e24
-    radius: 637
-    position: [0, 0]
-    velocity: [0, -9999]
+    radius: 6_371_000
+    position: [149_597_870_700, 0]
+    velocity: [0, 29_780]
     color: [0, 100, 255]
   - name: Sun
-    mass: 5.972e27
-    radius: 637
-    position: [5599999999, 0]
+    mass: 1.989e30
+    radius: 696_340_000
+    position: [0, 0]
     velocity: [0, 0]
-    color: [0, 100, 255]
+    color: [255, 204, 0]
