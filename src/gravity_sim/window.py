@@ -57,9 +57,9 @@ class Window:
             y (int): Y value of the mouse wheel event.
         """
         if y > 0:
-            self.zoomIn()
+            self.zoom_in()
         elif y < 0:
-            self.zoomOut()
+            self.zoom_out()
 
     def render_simulation(self):
         """Draw all the objects on the screen."""
@@ -96,11 +96,11 @@ class Window:
         point *= scale
         return Vector(point[0], point[1] * -1)
 
-    def zoomIn(self):
+    def zoom_in(self):
         """Increase the scale of the simulation."""
         self.scale *= 1.2
 
-    def zoomOut(self):
+    def zoom_out(self):
         """Decrease the scale of the simulation."""
         self.scale *= 0.8
 
