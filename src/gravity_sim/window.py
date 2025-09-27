@@ -94,7 +94,7 @@ class Window:
         """
         point -= refPoint
         point *= scale
-        return Vector(point[0] * -1, point[1])
+        return Vector(point[0], point[1] * -1)
 
     def zoomIn(self):
         """Increase the scale of the simulation."""
