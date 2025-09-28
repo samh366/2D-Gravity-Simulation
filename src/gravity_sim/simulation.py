@@ -4,6 +4,7 @@ import math
 
 
 class Simulation:
+    """Class to simulate some graviational bodies."""
     def __init__(
         self,
         name: str,
@@ -11,8 +12,16 @@ class Simulation:
         objects: list[Object],
         grav_constant: float = 6.6743e-11,
         description: str = None,
-        render: bool = False,
     ):
+        """Create a new simulation.
+
+        Args:
+            name (str): Name of the simulation.
+            timestep (int): The time to advance forward each frame.
+            objects (list[Object]): The objects in the simulation.
+            grav_constant (float, optional): The gravitational constant value to use.. Defaults to 6.6743e-11.
+            description (str, optional): A short description. Defaults to None.
+        """
         self.name = name
         self.timestep = timestep
         self.objects = objects
