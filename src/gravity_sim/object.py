@@ -73,7 +73,6 @@ class Object:
     """Represents an object in a simulation."""
     name: str
     mass: int
-    radius: int
     position: Vector = field(default_factory=Vector)
     velocity: Vector = field(default_factory=Vector)
     color: Color = field(default_factory=Color.random_colour)
@@ -92,7 +91,6 @@ class Object:
         return cls(
             name=data["name"],
             mass=mass,
-            radius=data["radius"],
             position=Vector(data["position"]),
             velocity=Vector(data["velocity"]),
             color=Color.from_iterable(data.get("color")),
