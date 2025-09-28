@@ -1,7 +1,13 @@
 name: "Simulation 1"
 timestep: 10000
+steps: 8
 description: "A realistic solar system simulation"
 objects:
+  - name: Sun
+    mass: 1.989e30
+    position: [0, 0]
+    velocity: [0, 0]
+    color: [255, 204, 0]
   - name: Earth
     mass: 5.972e24
     position: [149_597_870_700, 0]
@@ -13,8 +19,19 @@ objects:
       position: [363_300_000, 0]
       velocity: [0, 1046]
       color: [100, 100, 100]
-  - name: Sun
-    mass: 1.989e30
-    position: [0, 0]
-    velocity: [0, 0]
-    color: [255, 204, 0]
+  - name: Mars
+    mass: 6.4171e23
+    position: [227_943_824_000, 0]
+    velocity: [0, 24_077]
+    color: [255, 80, 0]
+    satellites:
+    - name: Phobos
+      mass: 1.0659e16
+      position: [9_378_000, 0]
+      velocity: [0, 2_138]
+      color: [112, 78, 56]
+    - name: Deimos
+      mass: 1.4762e15
+      position: [23_460_000, 0]
+      velocity: [0, 1_351]
+      color: [160, 130, 110]
