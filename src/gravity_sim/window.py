@@ -98,9 +98,9 @@ class Window:
 
     def render_simulation(self):
         """Draw all the objects on the screen."""
-        for object in self.simulation.objects:
-            pos = self.scale_point(object.get_position(), self.camera_pos, self.scale)
-            self.draw_point(pos, object.color)
+        for obj in self.simulation.get_objects():
+            pos = self.scale_point(obj.get_position(), self.camera_pos, self.scale)
+            self.draw_point(pos, obj.color)
 
     def draw_point(self, position: Vector, color: Color) -> None:
         """Draw a point on the screen at the given position, centering the point on the screen.

@@ -1,6 +1,7 @@
 from gravity_sim.object import Object
 from gravity_sim.vector import Vector
 import math
+from typing import List
 
 
 class Simulation:
@@ -44,7 +45,7 @@ class Simulation:
             ValueError: If 'objects' field is not in dictionary or is empty.
 
         Returns:
-            Simulation: _description_
+            Simulation: A loaded Simulation ready to start.
         """
         if "name" not in dictionary:
             raise ValueError("'name' field must be in config file.")
@@ -55,10 +56,14 @@ class Simulation:
         if len(dictionary.get("objects", [])) == 0:
             raise ValueError("'Config file contains no objects.")
 
+        objects = []
+        for obj in dictionary["objects"]:
+            objects.extend(Object.from_dict(obj))
+
         return cls(
             name=dictionary["name"],
             timestep=dictionary["timestep"],
-            objects=[Object.from_dict(obj) for obj in dictionary["objects"]],
+            objects=objects,
             description=dictionary.get("description"),
         )
 
@@ -104,5 +109,10 @@ class Simulation:
         while True:
             self.step()
 
-    def is_running() -> bool:
-        pass
+    def get_objects(self) -> List[Object]:
+        """Return a list of all objects in the simulation.
+
+        Returns:
+            List[Object]: A list of objects in the simulation.
+        """
+        return self.objects

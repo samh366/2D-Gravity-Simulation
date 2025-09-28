@@ -5,42 +5,43 @@ from pytest import raises
 class TestObject:
     """Tests the Object class."""
     def test_from_dict_with_satellite(self):
-        """An object with correct data should be returned when given a dictionary."""
+        """An object with a satellite should be returned correctly.
+
+        A list should be returned containing the object and it's satellites.
+        All positions and velocities should be relative to a parent objects'.
+        """
         dict_object = {
             "name": "Earth",
             "mass": 5.972e24,
-            "radius": 6371,
-            "position": [149597870.7, 0],
-            "velocity": [0, 29780],
+            "position": [1000, -1000],
+            "velocity": [10.1, 100],
             "color": [0, 100, 255],
             "satellites": [
                 {
                     "name": "Moon",
                     "mass": 5972,
-                    "radius": 637,
-                    "position": [10000.7, -10000],
-                    "velocity": [0, -29780],
+                    "position": [500, -1000],
+                    "velocity": [-5, 205],
                     "color": [255, 100, 255]
                 }
             ]
         }
-        actual_object = Object.from_dict(dict_object)
-        assert isinstance(actual_object, Object)
+        actual_objects = Object.from_dict(dict_object)
+        assert isinstance(actual_objects, list)
+        assert len(actual_objects) == 2
+        earth = actual_objects[0]
+        moon = actual_objects[1]
 
-        assert actual_object.name == dict_object["name"]
-        assert actual_object.mass == dict_object["mass"]
-        assert actual_object.radius == dict_object["radius"]
-        assert tuple(actual_object.position) == tuple(dict_object["position"])
-        assert tuple(actual_object.velocity) == tuple(dict_object["velocity"])
-        assert tuple(actual_object.color) == tuple(dict_object["color"])
+        assert earth.name == dict_object["name"]
+        assert earth.mass == dict_object["mass"]
+        assert tuple(earth.position) == tuple(dict_object["position"])
+        assert tuple(earth.velocity) == tuple(dict_object["velocity"])
+        assert tuple(earth.color) == tuple(dict_object["color"])
 
-        assert len(actual_object.satellites) == len(dict_object["satellites"])
-        satellite = actual_object.satellites[0]
         satellite_dict = dict_object["satellites"][0]
-        assert satellite.name == satellite_dict["name"]
-        assert satellite.mass == satellite_dict["mass"]
-        assert satellite.radius == satellite_dict["radius"]
-        assert tuple(satellite.position) == tuple(satellite_dict["position"])
-        assert tuple(satellite.velocity) == tuple(satellite_dict["velocity"])
-        assert tuple(satellite.color) == tuple(satellite_dict["color"])
+        assert moon.name == satellite_dict["name"]
+        assert moon.mass == satellite_dict["mass"]
+        assert tuple(moon.position) == (1500, -2000)
+        assert tuple(moon.velocity) == (5.1, 305)
+        assert tuple(moon.color) == tuple(satellite_dict["color"])
 

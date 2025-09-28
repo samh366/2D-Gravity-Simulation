@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 import random
 from gravity_sim.vector import Vector
+from typing import List
 
 @dataclass
 class Color:
@@ -81,7 +82,7 @@ class Object:
     force: Vector = field(default_factory=Vector)
 
     @classmethod
-    def from_dict(cls, data: dict, rel_pos: Vector = None, rel_vel: Vector = None) -> "Object":
+    def from_dict(cls, data: dict, rel_pos: Vector = None, rel_vel: Vector = None) -> List["Object"]:
         """Return an object from a dictionary.
 
         Args:
@@ -93,7 +94,7 @@ class Object:
             ValueError: If any values in data or invalid.
 
         Returns:
-            Object: The loaded object.
+            List[Object]: An object and any child objects flattened out.
         """
         if rel_pos is None:
             rel_pos = Vector(0, 0)
@@ -107,7 +108,7 @@ class Object:
         position = Vector(data["position"]) + rel_pos
         velocity = Vector(data["velocity"]) + rel_vel
 
-        return cls(
+        loaded_object = cls(
             name=data["name"],
             mass=mass,
             position=position,
@@ -115,6 +116,14 @@ class Object:
             color=Color.from_iterable(data.get("color")),
             satellites=[cls.from_dict(obj, rel_pos=position, rel_vel=velocity) for obj in data.get("satellites", [])]
         )
+
+        objects = [loaded_object]
+        satellites = data.get("satellites", [])
+
+        for obj in satellites:
+            objects.extend(cls.from_dict(obj, rel_pos=position, rel_vel=velocity))
+
+        return objects
 
 
     def add_force(self, force: Vector) -> None:
