@@ -81,20 +81,39 @@ class Object:
     force: Vector = field(default_factory=Vector)
 
     @classmethod
-    def from_dict(cls, data: dict):
-        """Return an object from the provided data."""
+    def from_dict(cls, data: dict, rel_pos: Vector = None, rel_vel: Vector = None) -> "Object":
+        """Return an object from a dictionary.
+
+        Args:
+            data (dict): Dictionary containing object information.
+            rel_pos (Vector): The position of the parent object.
+            rel_vel (Vector): The velocity of the parent object.
+
+        Raises:
+            ValueError: If any values in data or invalid.
+
+        Returns:
+            Object: The loaded object.
+        """
+        if rel_pos is None:
+            rel_pos = Vector(0, 0)
+        if rel_vel is None:
+            rel_vel = Vector(0, 0)
         try:
             mass = float(data["mass"])
         except ValueError:
             raise ValueError(f"Invalid mass value in object: {mass}")
 
+        position = Vector(data["position"]) + rel_pos
+        velocity = Vector(data["velocity"]) + rel_vel
+
         return cls(
             name=data["name"],
             mass=mass,
-            position=Vector(data["position"]),
-            velocity=Vector(data["velocity"]),
+            position=position,
+            velocity=velocity,
             color=Color.from_iterable(data.get("color")),
-            satellites=[cls.from_dict(obj) for obj in data.get("satellites", [])]
+            satellites=[cls.from_dict(obj, rel_pos=position, rel_vel=velocity) for obj in data.get("satellites", [])]
         )
 
 
