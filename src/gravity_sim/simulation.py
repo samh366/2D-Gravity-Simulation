@@ -10,6 +10,7 @@ class Simulation:
         self,
         name: str,
         timestep: int,
+        steps: int,
         objects: list[Object],
         grav_constant: float = 6.6743e-11,
         description: str = None,
@@ -19,12 +20,14 @@ class Simulation:
         Args:
             name (str): Name of the simulation.
             timestep (int): The time to advance forward each frame.
+            steps (int): The number of times to subdivide calculations in each timestep.
             objects (list[Object]): The objects in the simulation.
             grav_constant (float, optional): The gravitational constant value to use.. Defaults to 6.6743e-11.
             description (str, optional): A short description. Defaults to None.
         """
         self.name = name
         self.timestep = timestep
+        self.steps = steps
         self.objects = objects
         self.grav_constant = grav_constant
         self.description = description
@@ -63,6 +66,7 @@ class Simulation:
         return cls(
             name=dictionary["name"],
             timestep=dictionary["timestep"],
+            steps=dictionary.get("steps", 1),
             objects=objects,
             description=dictionary.get("description"),
         )
@@ -93,16 +97,22 @@ class Simulation:
 
         object1.add_force(force_vector)
 
-    def move_objects(self) -> None:
-        """Move the objects in the simulation based on the forces acting on them."""
+    def move_objects(self, timestep: float) -> None:
+        """Move the objects in the simulation based on the forces acting on them.
+
+        Args:
+            timestep (float): The timestep to move the simulation forward.
+        """
         for obj in self.objects:
-            obj.step(self.timestep)
+            obj.step(timestep)
             obj.reset_force()
 
     def step(self):
         """Step forward the simulation by one timstep."""
-        self.calculate_forces()
-        self.move_objects()
+        timestep = self.timestep / self.steps
+        for _ in range(self.steps):
+            self.calculate_forces()
+            self.move_objects(timestep)
 
     def run(self):
         """Run the simulation."""
