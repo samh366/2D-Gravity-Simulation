@@ -2,12 +2,18 @@ import pygame
 from gravity_sim.vector import Vector
 from gravity_sim.simulation import Simulation
 from gravity_sim.object import Color
+from pygame.event import Event
 
 
 class Window:
     """Pygame window to display simulation."""
 
     def __init__(self, simulation: Simulation):
+        """Intialise a new Window to render a simulation.
+
+        Args:
+            simulation (Simulation): The simulation to start rendering.
+        """
         self.simulation = simulation
 
         self._fps = 60
@@ -17,8 +23,10 @@ class Window:
         self.scale = self.estimate_scale()
 
         pygame.display.set_caption("Gravity Simulation")
-        self.screen = pygame.display.set_mode(size=(600, 600))
+        self.screen = pygame.display.set_mode(size=tuple(self.screen_size))
         self.clock = pygame.time.Clock()
+
+        self.paused = False
 
     def run(self):
         """Start the window to render the simulation."""
@@ -37,18 +45,45 @@ class Window:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
-
-            if event.type == pygame.MOUSEWHEEL:
-                self.handle_zoom(event.y)
+            else:
+                self.handle_event(event)
 
         self.screen.fill((0, 0, 0))
-        self.simulation.step()
+        if not self.paused:
+            self.simulation.step()
         self.render_simulation()
 
         pygame.display.update()
         self.clock.tick(self._fps)
 
         return True
+
+    def handle_event(self, event: Event) -> None:
+        """Update the simulation's status based on pygame event.
+
+        Args:
+            event (Event): A pygame event.
+        """
+        match event.type:
+            case pygame.MOUSEWHEEL:
+                self.handle_zoom(event.y)
+                return
+            case pygame.KEYDOWN:
+                self.handle_key_down(event.key)
+                return
+
+    def handle_key_down(self, key: int) -> None:
+        """Update the status of the simulation based on a key down press.
+
+        Args:
+            key (int): The key pressed.
+        """
+        if key == pygame.K_SPACE:
+            self.toggle_pause()
+
+    def toggle_pause(self) -> None:
+        """Toggle the simulation between paused and unpaused."""
+        self.paused = not self.paused
 
     def handle_zoom(self, y: int) -> None:
         """Zoom in or out based on the mouse wheel movement.
@@ -75,8 +110,6 @@ class Window:
             color (Color): Color of the point.
         """
         position += Vector(self.width // 2, self.height // 2)
-        print(position)
-        print(f"Scale {self.scale}")
         pygame.draw.circle(surface=self.screen, color=tuple(color), center=tuple(position), radius=8)
 
     def scale_point(self, point: Vector, refPoint: Vector, scale: float) -> Vector:
