@@ -23,7 +23,7 @@ class Window:
         self.scale = self.estimate_scale()
 
         pygame.display.set_caption("Gravity Simulation")
-        self.screen = pygame.display.set_mode(size=tuple(self.screen_size))
+        self.screen = pygame.display.set_mode(tuple(self.screen_size), pygame.RESIZABLE)
         self.clock = pygame.time.Clock()
 
         self.paused = False
