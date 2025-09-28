@@ -27,6 +27,7 @@ class Window:
         self.clock = pygame.time.Clock()
 
         self.paused = False
+        self.focused_object = None
 
     def run(self):
         """Start the window to render the simulation."""
@@ -51,6 +52,7 @@ class Window:
         self.screen.fill((0, 0, 0))
         if not self.paused:
             self.simulation.step()
+        self.focus_camera()
         self.render_simulation()
 
         pygame.display.update()
@@ -80,10 +82,34 @@ class Window:
         """
         if key == pygame.K_SPACE:
             self.toggle_pause()
+        if key == pygame.K_RIGHT:
+            self.update_focused_object_index(1)
+        if key == pygame.K_LEFT:
+            self.update_focused_object_index(-1)
 
     def toggle_pause(self) -> None:
         """Toggle the simulation between paused and unpaused."""
         self.paused = not self.paused
+
+    def update_focused_object_index(self, amount: int) -> None:
+        """Change the index of the focused object by an amount.
+
+        Args:
+            amount (int): The amount to change the focused object by.
+        """
+        if self.focused_object is None:
+            self.focused_object = -1
+        self.focused_object += amount
+
+        if self.focused_object >= self.simulation.get_num_objects():
+            self.focused_object = 0
+        if self.focused_object < 0:
+            self.focused_object = self.simulation.get_num_objects() - 1
+
+    def focus_camera(self):
+        """Set the cameras position to the location of the focused object."""
+        if self.focused_object is not None:
+            self.camera_pos = self.simulation.get_object(self.focused_object).position
 
     def handle_zoom(self, y: int) -> None:
         """Zoom in or out based on the mouse wheel movement.

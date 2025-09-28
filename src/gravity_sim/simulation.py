@@ -116,3 +116,25 @@ class Simulation:
             List[Object]: A list of objects in the simulation.
         """
         return self.objects
+
+    def get_num_objects(self) -> int:
+        """Get the number of objects in the simulation.
+
+        Returns:
+            int: The number of objects in the simulation.
+        """
+        return len(self.objects)
+
+    def get_object(self, index: int) -> Object:
+        """Get an object at a certain index.
+
+        Args:
+            index (int): Index of the object to get.
+
+        Returns:
+            Object: THe object at the given index
+        """
+        try:
+            return self.objects[index]
+        except IndexError:
+            raise IndexError(f"Index {index} out of bounds for {len(self.objects)} objects in simulation.")
