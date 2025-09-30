@@ -28,6 +28,7 @@ class Window:
 
         self.paused = False
         self.focused_object = None
+        self.held_mouse_pos = Stack(size=2)
 
     def run(self):
         """Start the window to render the simulation."""
@@ -50,15 +51,21 @@ class Window:
                 self.handle_event(event)
 
         self.screen.fill((0, 0, 0))
-        if not self.paused:
-            self.simulation.step()
+        self.move_camera()
+        self.update_simulation()
         self.focus_camera()
         self.render_simulation()
+        print(self.camera_pos)
 
         pygame.display.update()
         self.clock.tick(self._fps)
 
         return True
+
+    def update_simulation(self):
+        """Update the simulation to the next state."""
+        if not self.paused:
+            self.simulation.step()
 
     def handle_event(self, event: Event) -> None:
         """Update the simulation's status based on pygame event.
@@ -91,12 +98,20 @@ class Window:
         """Toggle the simulation between paused and unpaused."""
         self.paused = not self.paused
 
+    def move_camera(self):
+        """If the left mouse button is held, moves the camera."""
+        self.mouse_movement = pygame.mouse.get_rel()
+        if pygame.mouse.get_pressed()[0]:
+            self.focused_object = None
+            self.camera_pos -= Vector(self.mouse_movement[0], self.mouse_movement[1]*-1)
+
     def update_focused_object_index(self, amount: int) -> None:
         """Change the index of the focused object by an amount.
 
         Args:
             amount (int): The amount to change the focused object by.
         """
+        self.camera_pos = Vector(0, 0)
         if self.focused_object is None:
             self.focused_object = -1
         self.focused_object += amount
@@ -109,7 +124,7 @@ class Window:
     def focus_camera(self):
         """Set the cameras position to the location of the focused object."""
         if self.focused_object is not None:
-            self.camera_pos = self.simulation.get_object(self.focused_object).position
+            self.camera_pos = self.simulation.get_object(self.focused_object).position * self.scale
 
     def handle_zoom(self, y: int) -> None:
         """Zoom in or out based on the mouse wheel movement.
@@ -125,7 +140,7 @@ class Window:
     def render_simulation(self):
         """Draw all the objects on the screen."""
         for obj in self.simulation.get_objects():
-            pos = self.scale_point(obj.get_position(), self.camera_pos, self.scale)
+            pos = self.scale_point(obj.get_position(), self.camera_pos)
             self.draw_point(pos, obj.color)
 
     def draw_point(self, position: Vector, color: Color) -> None:
@@ -138,7 +153,7 @@ class Window:
         position += Vector(self.width // 2, self.height // 2)
         pygame.draw.circle(surface=self.screen, color=tuple(color), center=tuple(position), radius=8)
 
-    def scale_point(self, point: Vector, refPoint: Vector, scale: float) -> Vector:
+    def scale_point(self, point: Vector, refPoint: Vector) -> Vector:
         """Scale a point to render to the screen.
 
         Also flips the y position to render to the screen.
@@ -146,13 +161,12 @@ class Window:
         Args:
             point (Vector): The point to scale.
             refPoint (Vector): The position of the "camera".
-            scale (float): The scale or "zoom" to apply to the point.
 
         Returns:
             Vector: The scaled point.
         """
+        point *= self.scale
         point -= refPoint
-        point *= scale
         return Vector(point[0], point[1] * -1)
 
     def zoom_in(self):
