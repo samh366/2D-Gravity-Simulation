@@ -28,7 +28,6 @@ class Window:
 
         self.paused = False
         self.focused_object = None
-        self.held_mouse_pos = Stack(size=2)
 
     def run(self):
         """Start the window to render the simulation."""
@@ -55,7 +54,6 @@ class Window:
         self.update_simulation()
         self.focus_camera()
         self.render_simulation()
-        print(self.camera_pos)
 
         pygame.display.update()
         self.clock.tick(self._fps)
@@ -172,10 +170,12 @@ class Window:
     def zoom_in(self):
         """Increase the scale of the simulation."""
         self.scale *= 1.2
+        self.camera_pos *= 1.2
 
     def zoom_out(self):
         """Decrease the scale of the simulation."""
         self.scale *= 0.8
+        self.camera_pos *= 0.8
 
     def estimate_scale(self) -> float:
         """Estimate an initial scale for the simulation based on the objects furthest apart.
