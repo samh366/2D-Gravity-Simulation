@@ -18,7 +18,6 @@ class Window:
 
         self._fps = 60
         self.screen_size = Vector(600, 600)
-        self.width, self.height = self.screen_size
         self.camera_pos = Vector(0, 0)
         self.scale = self.estimate_scale()
 
@@ -149,7 +148,8 @@ class Window:
             position (Vector): The position to draw the point.
             color (Color): Color of the point.
         """
-        position += Vector(self.width // 2, self.height // 2)
+        width, height = self.screen.get_size()
+        position += Vector(width // 2, height // 2)
         pygame.draw.circle(surface=self.screen, color=tuple(color), center=tuple(position), radius=8)
 
     def scale_point(self, point: Vector, refPoint: Vector) -> Vector:
