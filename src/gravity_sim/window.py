@@ -28,6 +28,7 @@ class Window:
 
         self.paused = False
         self.focused_object = None
+        self.zoom_factor = 1.2
 
     def run(self):
         """Start the window to render the simulation."""
@@ -169,13 +170,13 @@ class Window:
 
     def zoom_in(self):
         """Increase the scale of the simulation."""
-        self.scale *= 1.2
-        self.camera_pos *= 1.2
+        self.scale *= self.zoom_factor
+        self.camera_pos *= self.zoom_factor
 
     def zoom_out(self):
         """Decrease the scale of the simulation."""
-        self.scale *= 0.8
-        self.camera_pos *= 0.8
+        self.scale /= self.zoom_factor
+        self.camera_pos /= self.zoom_factor
 
     def estimate_scale(self) -> float:
         """Estimate an initial scale for the simulation based on the objects furthest apart.
