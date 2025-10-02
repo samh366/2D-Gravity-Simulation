@@ -21,7 +21,7 @@ class Window:
         self.camera_pos = Vector(0, 0)
         self.scale = self.estimate_scale()
 
-        pygame.display.set_caption("Gravity Simulation")
+        pygame.display.set_caption(simulation.name)
         self.screen = pygame.display.set_mode(tuple(self.screen_size), pygame.RESIZABLE)
         self.clock = pygame.time.Clock()
 
