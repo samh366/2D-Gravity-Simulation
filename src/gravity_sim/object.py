@@ -101,9 +101,9 @@ class Object:
         if rel_vel is None:
             rel_vel = Vector(0, 0)
         try:
-            mass = float(data["mass"])
-        except ValueError:
-            raise ValueError(f"Invalid mass value in object: {mass}")
+            mass = cls.random_int(data["mass"])
+        except ValueError as e:
+            raise ValueError(f"Error trying to load mass value {mass}: {e}")
 
         position = Vector(data["position"]) + rel_pos
         velocity = Vector(data["velocity"]) + rel_vel
@@ -125,6 +125,32 @@ class Object:
 
         return objects
 
+    @classmethod
+    def random_vector(self, val: dict[list[int|str]]):
+        if isinstance(val, list):
+            return list(map(int, val))
+        return []
+
+    @classmethod
+    def random_int(self, val: int|str|dict):
+        """If val contains min and max values, generate a random int, else return val.
+
+        Args:
+            val (int | str | dict): A float or a dictionary containing the keys 'min' and 'max'.
+        """
+        try:
+            if isinstance(val, (int, str)):
+                return int(val)
+        except ValueError:
+            raise ValueError("Integer value required.")
+
+        if not isinstance(val, dict):
+            raise ValueError(f"Invalid type {val.__class__}")
+
+        if not val.get("min") or not val.get("max"):
+            raise ValueError("Invalid keys, random dict must contain 'min' and 'max' values.")
+
+        return random.randint(int(val.get("min")), int(val.get("max")))
 
     def add_force(self, force: Vector) -> None:
         """Add an external force to the force this object is experiencing.
