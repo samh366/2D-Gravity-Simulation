@@ -1,5 +1,5 @@
-name: "Simulation 1"
-timestep: 10000
+name: "Solar System"
+timestep: 5000
 steps: 8
 description: "A realistic solar system simulation"
 objects:
