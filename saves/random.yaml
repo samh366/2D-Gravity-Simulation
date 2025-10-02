@@ -12,7 +12,7 @@ objects:
     mass: 5.972e24
     position:
       max: [149_597_870_700, 0]
-      min: [0, 0]
+      min: [100_000_000, 0]
     velocity: [0, 29_780]
     color: [0, 100, 255]
     satellites:

@@ -103,10 +103,10 @@ class Object:
         try:
             mass = cls.random_int(data["mass"])
         except ValueError as e:
-            raise ValueError(f"Error trying to load mass value {mass}: {e}")
+            raise ValueError(f"Error trying to load mass value {data["mass"]}: {e}")
 
-        position = Vector(data["position"]) + rel_pos
-        velocity = Vector(data["velocity"]) + rel_vel
+        position = cls.random_vector(data["position"]) + rel_pos
+        velocity = cls.random_vector(data["velocity"]) + rel_vel
 
         loaded_object = cls(
             name=data["name"],
@@ -128,8 +128,22 @@ class Object:
     @classmethod
     def random_vector(self, val: dict[list[int|str]]):
         if isinstance(val, list):
-            return list(map(int, val))
-        return []
+            return Vector(*list(map(int, val)))
+
+        if not isinstance(val, dict):
+            raise ValueError(f"Invalid type {val.__class__}")
+
+        if not val.get("min") or not val.get("max"):
+            raise ValueError("Invalid keys, random dict must contain 'min' and 'max' values.")
+
+        if len(val["min"]) != len(val["max"]):
+            raise ValueError("Min and max lists have mismatched lengths.")
+
+        values = []
+        for min, max in zip(val["min"], val["max"]):
+            values.append(random.randint(int(min), int(max)))
+
+        return Vector(*values)
 
     @classmethod
     def random_int(self, val: int|str|dict):
