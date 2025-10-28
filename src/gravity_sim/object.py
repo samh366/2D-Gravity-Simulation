@@ -3,9 +3,11 @@ import random
 from gravity_sim.vector import Vector
 from typing import List
 
+
 @dataclass
 class Color:
     """Stores an RGB color."""
+
     r: int
     g: int
     b: int
@@ -72,17 +74,26 @@ class Color:
 @dataclass
 class Object:
     """Represents an object in a simulation."""
+
     name: str
     mass: int
     position: Vector = field(default_factory=Vector)
     velocity: Vector = field(default_factory=Vector)
     color: Color = field(default_factory=Color.random_colour)
-    satellites: list["Object"]  = field(default_factory=list)
+    satellite_data: list[dict] = field(default_factory=list)
 
     force: Vector = field(default_factory=Vector)
 
+    def __post_init__(self):
+        """Initialise satellites."""
+        self.satellites = []
+        for obj in self.satellite_data:
+            self.satellites.append(self.__class__.from_dict(obj, rel_pos=self.position, rel_vel=self.velocity))
+
     @classmethod
-    def from_dict(cls, data: dict, rel_pos: Vector = None, rel_vel: Vector = None) -> List["Object"]:
+    def from_dict(
+        cls, data: dict, rel_pos: Vector = None, rel_vel: Vector = None, rng: random.Random = None
+    ) -> "Object":
         """Return an object from a dictionary.
 
         Args:
@@ -100,13 +111,15 @@ class Object:
             rel_pos = Vector(0, 0)
         if rel_vel is None:
             rel_vel = Vector(0, 0)
+        if rng is None:
+            rng = random
         try:
-            mass = cls.random_int(data["mass"])
+            mass = cls.random_int(data["mass"], rng)
         except ValueError as e:
-            raise ValueError(f"Error trying to load mass value {data["mass"]}: {e}")
+            raise ValueError(f"Error trying to load mass value {data['mass']}: {e}")
 
-        position = cls.random_vector(data["position"]) + rel_pos
-        velocity = cls.random_vector(data["velocity"]) + rel_vel
+        position = cls.random_vector(data["position"], rng) + rel_pos
+        velocity = cls.random_vector(data["velocity"], rng) + rel_vel
 
         loaded_object = cls(
             name=data["name"],
@@ -114,21 +127,15 @@ class Object:
             position=position,
             velocity=velocity,
             color=Color.from_iterable(data.get("color")),
-            satellites=[cls.from_dict(obj, rel_pos=position, rel_vel=velocity) for obj in data.get("satellites", [])]
+            satellite_data=data.get("satellites", []),
         )
 
-        objects = [loaded_object]
-        satellites = data.get("satellites", [])
-
-        for obj in satellites:
-            objects.extend(cls.from_dict(obj, rel_pos=position, rel_vel=velocity))
-
-        return objects
+        return loaded_object
 
     @classmethod
-    def random_vector(self, val: dict[list[int|str]]):
+    def random_vector(self, val: dict[list[int | str]], rng: random.Random):
         if isinstance(val, list):
-            return Vector(*list(map(int, val)))
+            return Vector(*list(map(float, val)))
 
         if not isinstance(val, dict):
             raise ValueError(f"Invalid type {val.__class__}")
@@ -141,12 +148,14 @@ class Object:
 
         values = []
         for min, max in zip(val["min"], val["max"]):
-            values.append(random.randint(int(min), int(max)))
+            min = int(float(min))
+            max = int(float(max))
+            values.append(rng.randint(min, max))
 
         return Vector(*values)
 
     @classmethod
-    def random_int(self, val: int|str|dict):
+    def random_int(self, val: int | str | dict, rng: random.Random):
         """If val contains min and max values, generate a random int, else return val.
 
         Args:
@@ -154,7 +163,7 @@ class Object:
         """
         try:
             if isinstance(val, (int, str)):
-                return int(val)
+                return int(float(val))
         except ValueError:
             raise ValueError("Integer value required.")
 
@@ -164,7 +173,9 @@ class Object:
         if not val.get("min") or not val.get("max"):
             raise ValueError("Invalid keys, random dict must contain 'min' and 'max' values.")
 
-        return random.randint(int(val.get("min")), int(val.get("max")))
+        min = int(float(val.get("min")))
+        max = int(float(val.get("max")))
+        return rng.randint(min, max)
 
     def add_force(self, force: Vector) -> None:
         """Add an external force to the force this object is experiencing.
@@ -181,6 +192,11 @@ class Object:
     def get_position(self) -> Vector:
         """Return the current position."""
         return self.position
+
+    def get_satellites(self) -> list["Object"]:
+        """Recursively get all satellites of this object."""
+        # TODO: Implement
+        return []
 
     def step(self, timestep: float) -> None:
         """Recalculate position based on current force value and timestep.

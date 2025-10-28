@@ -2,10 +2,11 @@ from gravity_sim.object import Object
 from gravity_sim.vector import Vector
 import math
 from typing import List
-
+from typing import Optional
+from random import Random
 
 class Simulation:
-    """Class to simulate some graviational bodies."""
+    """Class to simulate some gravitational bodies."""
     def __init__(
         self,
         name: str,
@@ -14,6 +15,7 @@ class Simulation:
         objects: list[Object],
         grav_constant: float = 6.6743e-11,
         description: str = None,
+        seed: Optional[int] = None
     ):
         """Create a new simulation.
 
@@ -24,16 +26,22 @@ class Simulation:
             objects (list[Object]): The objects in the simulation.
             grav_constant (float, optional): The gravitational constant value to use.. Defaults to 6.6743e-11.
             description (str, optional): A short description. Defaults to None.
+            seed (int, optional): The seed to use for random calculations.
         """
         self.name = name
         self.timestep = timestep
         self.steps = steps
-        self.objects = objects
         self.grav_constant = grav_constant
         self.description = description
+        self._random = Random(seed)
+        self.objects = objects
+
 
         if self.description is None:
             self.description = "A simulation."
+
+    def _init_objects(self, object_data: list[dict]) -> list[Object]:
+        return [Object.from_dict(obj, self._random) for obj in object_data]
 
     @classmethod
     def from_dict(cls, dictionary: dict) -> "Simulation":
@@ -61,7 +69,9 @@ class Simulation:
 
         objects = []
         for obj in dictionary["objects"]:
-            objects.extend(Object.from_dict(obj))
+            entity = Object.from_dict(obj)
+            objects.append(entity)
+            objects.extend(entity.get_satellites())
 
         return cls(
             name=dictionary["name"],
@@ -70,6 +80,10 @@ class Simulation:
             objects=objects,
             description=dictionary.get("description"),
         )
+
+    def get_random(self) -> Random:
+        """Get the simulation's random number generator."""
+        return self._random
 
     def calculate_forces(self):
         """Compute the forces between all the objects in the simulation."""
@@ -108,7 +122,7 @@ class Simulation:
             obj.reset_force()
 
     def step(self):
-        """Step forward the simulation by one timstep."""
+        """Step forward the simulation by one timestep."""
         timestep = self.timestep / self.steps
         for _ in range(self.steps):
             self.calculate_forces()
