@@ -194,9 +194,11 @@ class Object:
         return self.position
 
     def get_satellites(self) -> list["Object"]:
-        """Recursively get all satellites of this object."""
-        # TODO: Implement
-        return []
+        """Return a list containing this object and all satellite objects recursively."""
+        satellites = [self]
+        for satellite in self.satellites:
+            satellites.extend(satellite.get_satellites())
+        return satellites
 
     def step(self, timestep: float) -> None:
         """Recalculate position based on current force value and timestep.

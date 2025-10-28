@@ -70,7 +70,6 @@ class Simulation:
         objects = []
         for obj in dictionary["objects"]:
             entity = Object.from_dict(obj)
-            objects.append(entity)
             objects.extend(entity.get_satellites())
 
         return cls(
