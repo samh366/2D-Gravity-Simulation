@@ -111,71 +111,17 @@ class Object:
             rel_pos = Vector(0, 0)
         if rel_vel is None:
             rel_vel = Vector(0, 0)
-        if rng is None:
-            rng = random
-        try:
-            mass = cls.random_int(data["mass"], rng)
-        except ValueError as e:
-            raise ValueError(f"Error trying to load mass value {data['mass']}: {e}")
-
-        position = cls.random_vector(data["position"], rng) + rel_pos
-        velocity = cls.random_vector(data["velocity"], rng) + rel_vel
 
         loaded_object = cls(
             name=data["name"],
-            mass=mass,
-            position=position,
-            velocity=velocity,
+            mass=data["mass"],
+            position=data["position"],
+            velocity=data["velocity"],
             color=Color.from_iterable(data.get("color")),
             satellite_data=data.get("satellites", []),
         )
 
         return loaded_object
-
-    @classmethod
-    def random_vector(self, val: dict[list[int | str]], rng: random.Random):
-        if isinstance(val, list):
-            return Vector(*list(map(float, val)))
-
-        if not isinstance(val, dict):
-            raise ValueError(f"Invalid type {val.__class__}")
-
-        if not val.get("min") or not val.get("max"):
-            raise ValueError("Invalid keys, random dict must contain 'min' and 'max' values.")
-
-        if len(val["min"]) != len(val["max"]):
-            raise ValueError("Min and max lists have mismatched lengths.")
-
-        values = []
-        for min, max in zip(val["min"], val["max"]):
-            min = int(float(min))
-            max = int(float(max))
-            values.append(rng.randint(min, max))
-
-        return Vector(*values)
-
-    @classmethod
-    def random_int(self, val: int | str | dict, rng: random.Random):
-        """If val contains min and max values, generate a random int, else return val.
-
-        Args:
-            val (int | str | dict): A float or a dictionary containing the keys 'min' and 'max'.
-        """
-        try:
-            if isinstance(val, (int, str)):
-                return int(float(val))
-        except ValueError:
-            raise ValueError("Integer value required.")
-
-        if not isinstance(val, dict):
-            raise ValueError(f"Invalid type {val.__class__}")
-
-        if not val.get("min") or not val.get("max"):
-            raise ValueError("Invalid keys, random dict must contain 'min' and 'max' values.")
-
-        min = int(float(val.get("min")))
-        max = int(float(val.get("max")))
-        return rng.randint(min, max)
 
     def add_force(self, force: Vector) -> None:
         """Add an external force to the force this object is experiencing.
