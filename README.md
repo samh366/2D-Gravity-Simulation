@@ -56,6 +56,23 @@ Setting this to a high value greatly increases the accuracy of the simulation, a
 
 **TLDR; Time per frame = speed of simulation, iterations per frame = how accurate the simulation is**
 
+## Debugging
+An example launch.json config would look something like this:
+```json
+"configurations": [
+    {
+        "name": "Random.yaml",
+        "type": "debugpy",
+        "request": "launch",
+        "module": "gravity_sim",
+        "console": "integratedTerminal",
+        "args": [
+            "saves/[SAVE-TO-USE].yaml"
+        ],
+    }
+]
+```
+
 ## Images
 
 ### Config Screen
