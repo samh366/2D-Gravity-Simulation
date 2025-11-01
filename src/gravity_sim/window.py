@@ -3,6 +3,7 @@ from gravity_sim.vector import Vector
 from gravity_sim.simulation import Simulation
 from gravity_sim.object import Color
 from pygame.event import Event
+from decimal import Decimal
 
 
 class Window:
@@ -19,15 +20,15 @@ class Window:
         self._fps = 60
         self.screen_size = Vector(600, 600)
         self.camera_pos = Vector(0, 0)
-        self.scale = self.estimate_scale()
+        self.scale = Decimal(self.estimate_scale())
 
         pygame.display.set_caption(simulation.name)
-        self.screen = pygame.display.set_mode(tuple(self.screen_size), pygame.RESIZABLE)
+        self.screen = pygame.display.set_mode(self.screen_size.to_tuple(), pygame.RESIZABLE)
         self.clock = pygame.time.Clock()
 
         self.paused = False
         self.focused_object = None
-        self.zoom_factor = 1.2
+        self.zoom_factor = Decimal(1.2)
 
     def run(self):
         """Start the window to render the simulation."""
@@ -150,7 +151,7 @@ class Window:
         """
         width, height = self.screen.get_size()
         position += Vector(width // 2, height // 2)
-        pygame.draw.circle(surface=self.screen, color=tuple(color), center=tuple(position), radius=8)
+        pygame.draw.circle(surface=self.screen, color=tuple(color), center=position.to_tuple(), radius=8)
 
     def scale_point(self, point: Vector, refPoint: Vector) -> Vector:
         """Scale a point to render to the screen.

@@ -2,8 +2,8 @@ from gravity_sim.object import Object
 from gravity_sim.vector import Vector
 import math
 from typing import List
-from typing import Optional
 from random import Random
+from decimal import Decimal
 
 class Simulation:
     """Class to simulate some gravitational bodies."""
@@ -29,7 +29,7 @@ class Simulation:
         self.name = name
         self.timestep = timestep
         self.steps = steps
-        self.grav_constant = grav_constant
+        self.grav_constant = Decimal(grav_constant)
         self.description = description
         self.objects = objects
 
@@ -103,11 +103,11 @@ class Simulation:
 
         object1.add_force(force_vector)
 
-    def move_objects(self, timestep: float) -> None:
+    def move_objects(self, timestep: Decimal) -> None:
         """Move the objects in the simulation based on the forces acting on them.
 
         Args:
-            timestep (float): The timestep to move the simulation forward.
+            timestep (Decimal): The timestep to move the simulation forward.
         """
         for obj in self.objects:
             obj.step(timestep)
@@ -115,7 +115,7 @@ class Simulation:
 
     def step(self):
         """Step forward the simulation by one timestep."""
-        timestep = self.timestep / self.steps
+        timestep = Decimal(self.timestep / self.steps)
         for _ in range(self.steps):
             self.calculate_forces()
             self.move_objects(timestep)

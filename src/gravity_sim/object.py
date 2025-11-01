@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 import random
 from gravity_sim.vector import Vector
 from typing import List
+from decimal import Decimal
 
 
 @dataclass
@@ -114,7 +115,7 @@ class Object:
 
         loaded_object = cls(
             name=data["name"],
-            mass=data["mass"],
+            mass=Decimal(data["mass"]),
             position=Vector(data["position"]) + rel_pos,
             velocity=Vector(data["velocity"]) + rel_vel,
             color=Color.from_iterable(data.get("color")),
@@ -146,7 +147,7 @@ class Object:
             satellites.extend(satellite.get_satellites())
         return satellites
 
-    def step(self, timestep: float) -> None:
+    def step(self, timestep: Decimal) -> None:
         """Recalculate position based on current force value and timestep.
 
         Args:

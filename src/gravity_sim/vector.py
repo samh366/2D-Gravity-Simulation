@@ -1,4 +1,6 @@
 import math
+from decimal import Decimal
+from typing import Union
 
 class Vector:
     """A Vector class."""
@@ -6,27 +8,28 @@ class Vector:
     def __init__(self, *args):
         """Initialise a vector given an x and y values."""
         if len(args) == 0:
-            self.values = (0.0, 0.0)
+            self.values = (0, 0)
         elif len(args) == 1 and hasattr(args[0], "__iter__"):
             self.values = tuple(args[0])
         else:
             self.values = tuple(args)
+        self.values = tuple(Decimal(v) for v in self.values)
 
     @classmethod
-    def from_magnitude_theta(self, magnitude: float, theta: float) -> "Vector":
-        """Return an x, y Vector object from a given magnitude and theta value in radians.
+    def from_magnitude_theta(self, magnitude: Union[float, Decimal], theta: Union[float, Decimal]) -> "Vector":
+        """Return a 2D Vector from a given magnitude and theta value in radians.
 
         Args:
-            magnitude (float): Magnitude of the vector.
-            theta (float): Angle of the vector in radians.
+            magnitude (float, Decimal): Magnitude of the vector.
+            theta (float, Decimal): Angle of the vector in radians.
 
         Returns:
             Vector: A 2D vector calculated from the given magnitude and theta value,
         """
         return Vector(
             *(
-                math.cos(theta) * magnitude,
-                math.sin(theta) * magnitude,
+                Decimal(math.cos(theta)) * magnitude,
+                Decimal(math.sin(theta)) * magnitude,
             )
         )
 
@@ -75,7 +78,7 @@ class Vector:
         """
         if isinstance(other, Vector):
             return Vector(*tuple(a + b for a, b in zip(self, other)))
-        if isinstance(other, (float, int)):
+        if isinstance(other, (Decimal)):
             return Vector(*tuple(a + other for a in self))
         raise ValueError(f"Addition not supported between {self.__class__} and {other.__class__}")
 
@@ -90,7 +93,7 @@ class Vector:
         """
         if isinstance(other, Vector):
             return Vector(*tuple(a - b for a, b in zip(self, other)))
-        if isinstance(other, (float, int)):
+        if isinstance(other, (Decimal)):
             return Vector(*tuple(a - other for a in self))
         raise ValueError(f"Subtraction not supported between {self.__class__} and {other.__class__}")
 
@@ -103,7 +106,7 @@ class Vector:
         Returns:
             Vector: _description_
         """
-        if isinstance(other, (float, int)):
+        if isinstance(other, (Decimal)):
             return Vector(*tuple(a / other for a in self))
 
         raise ValueError(f"Division not supported between {self.__class__} and {other.__class__}")
@@ -117,7 +120,7 @@ class Vector:
         Returns:
             Vector: _description_
         """
-        if isinstance(other, (float, int)):
+        if isinstance(other, (Decimal)):
             return Vector(*tuple(a * other for a in self))
 
         raise ValueError(f"Multiplication not supported between {self.__class__} and {other.__class__}")
@@ -125,3 +128,11 @@ class Vector:
     def __rmul__(self, other) -> "Vector":
         """Right multplication."""
         return self.__mul__(other)
+
+    def to_tuple(self) -> tuple[int]:
+        """Return the Vector as a tuple.
+
+        Returns:
+            tuple[int]: The vector as a tuple of integers.
+        """
+        return tuple(float(v) for v in self.values)
