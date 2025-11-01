@@ -15,7 +15,6 @@ class Simulation:
         objects: list[Object],
         grav_constant: float = 6.6743e-11,
         description: str = None,
-        seed: Optional[int] = None
     ):
         """Create a new simulation.
 
@@ -26,22 +25,16 @@ class Simulation:
             objects (list[Object]): The objects in the simulation.
             grav_constant (float, optional): The gravitational constant value to use.. Defaults to 6.6743e-11.
             description (str, optional): A short description. Defaults to None.
-            seed (int, optional): The seed to use for random calculations.
         """
         self.name = name
         self.timestep = timestep
         self.steps = steps
         self.grav_constant = grav_constant
         self.description = description
-        self._random = Random(seed)
         self.objects = objects
-
 
         if self.description is None:
             self.description = "A simulation."
-
-    def _init_objects(self, object_data: list[dict]) -> list[Object]:
-        return [Object.from_dict(obj, self._random) for obj in object_data]
 
     @classmethod
     def from_dict(cls, dictionary: dict) -> "Simulation":
