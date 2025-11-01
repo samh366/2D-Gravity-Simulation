@@ -92,7 +92,7 @@ class Object:
 
     @classmethod
     def from_dict(
-        cls, data: dict, rel_pos: Vector = None, rel_vel: Vector = None, rng: random.Random = None
+        cls, data: dict, rel_pos: Vector = None, rel_vel: Vector = None,
     ) -> "Object":
         """Return an object from a dictionary.
 
@@ -115,8 +115,8 @@ class Object:
         loaded_object = cls(
             name=data["name"],
             mass=data["mass"],
-            position=data["position"],
-            velocity=data["velocity"],
+            position=Vector(data["position"]) + rel_pos,
+            velocity=Vector(data["velocity"]) + rel_vel,
             color=Color.from_iterable(data.get("color")),
             satellite_data=data.get("satellites", []),
         )
