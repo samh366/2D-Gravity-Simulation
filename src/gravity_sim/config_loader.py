@@ -30,9 +30,10 @@ class YamlParser:
             queue.append(obj)
         while queue:
             obj = queue.popleft()
-            for sat in obj.satellites:
+            for sat in obj.get("satellites", []):
                 queue.append(sat)
             self.resolve_random_values(obj)
+        return config
 
     def resolve_random_values(self, obj: dict) -> None:
         """Convert any random parameters to values in the provided dictionary in-place.
@@ -71,7 +72,7 @@ class YamlParser:
         max_values = values["max"]
         min_values = values["min"]
         return [
-            self._rng.randint(min_values[0], max_values[1]),
+            self._rng.randint(min_values[0], max_values[0]),
             self._rng.randint(min_values[1], max_values[1])
         ]
 
