@@ -29,6 +29,7 @@ class Window:
         self.paused = False
         self.focused_object = None
         self.zoom_factor = Decimal(1.2)
+        self.speed_factor = Decimal(1.5)
 
     def run(self):
         """Start the window to render the simulation."""
@@ -92,6 +93,10 @@ class Window:
             self.update_focused_object_index(1)
         if key == pygame.K_LEFT:
             self.update_focused_object_index(-1)
+        if key == pygame.K_PERIOD:
+            self.change_simulation_speed(self.speed_factor)
+        if key == pygame.K_COMMA:
+            self.change_simulation_speed(1/self.speed_factor)
 
     def toggle_pause(self) -> None:
         """Toggle the simulation between paused and unpaused."""
@@ -178,6 +183,14 @@ class Window:
         """Decrease the scale of the simulation."""
         self.scale /= self.zoom_factor
         self.camera_pos /= self.zoom_factor
+
+    def change_simulation_speed(self, factor: Decimal) -> None:
+        """Change the simulation timestep by some factor.
+
+        Args:
+            factor (Decimal): The factor to multiply it by.
+        """
+        self.simulation.set_timestep(self.simulation.get_timestep() * factor)
 
     def estimate_scale(self) -> float:
         """Estimate an initial scale for the simulation based on the objects furthest apart.

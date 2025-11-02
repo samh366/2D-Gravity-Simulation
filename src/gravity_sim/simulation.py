@@ -27,7 +27,7 @@ class Simulation:
             description (str, optional): A short description. Defaults to None.
         """
         self.name = name
-        self.timestep = timestep
+        self.timestep = Decimal(timestep)
         self.steps = steps
         self.grav_constant = Decimal(grav_constant)
         self.description = description
@@ -154,3 +154,19 @@ class Simulation:
             return self.objects[index]
         except IndexError:
             raise IndexError(f"Index {index} out of bounds for {len(self.objects)} objects in simulation.")
+
+    def get_timestep(self) -> Decimal:
+        """Get the current timestep.
+
+        Returns:
+            Decimal: The current timestep.
+        """
+        return self.timestep
+
+    def set_timestep(self, new_timestep: Decimal) -> None:
+        """Set the current timestep.
+
+        Args:
+            new_timestep (Decimal): The new timestep.
+        """
+        self.timestep = new_timestep
