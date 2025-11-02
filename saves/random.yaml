@@ -2,7 +2,7 @@ name: "Random Earth Sized Planets"
 timestep: 5000
 seed: 10
 steps: 32
-description: "A realistic solar system simulation"
+description: "A very random simulation"
 objects:
   - name: Sun
     mass: 1.989e30
