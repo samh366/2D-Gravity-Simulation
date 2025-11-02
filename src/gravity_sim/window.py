@@ -1,5 +1,8 @@
 from decimal import Decimal
 
+from os import environ
+environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
+
 import pygame
 from pygame import Surface
 from pygame.event import Event
@@ -34,10 +37,12 @@ class Window:
         self.focused_object = None
         self.zoom_factor = Decimal(1.2)
         self.speed_factor = Decimal(1.5)
-        self.show_names = False
+        self.show_names = True
 
         self.font = pygame.font.SysFont("Calibri", 20)
         self.object_names = self._generate_object_names()
+
+        self.print_help()
 
     def run(self):
         """Start the window to render the simulation."""
@@ -257,3 +262,15 @@ class Window:
         for obj in self.simulation.get_objects():
             names.append(self.font.render(obj.name, True, tuple(obj.color)))
         return names
+
+    def print_help(self):
+        """Print the controls to the terminal."""
+        help = """
+Controls:
+Space - Pause/play simulation
+Right Arrow - Increment focused object
+Left Arrow - Decrement focused object
+Period - Increase speed
+Comma - Decrease speed
+N - Toggle names"""
+        print(help)
