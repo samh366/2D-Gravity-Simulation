@@ -1,6 +1,7 @@
 from gravity_sim.config_loader import ConfigLoader
 from gravity_sim.window import Window
 
+
 class SimulationRunner:
     """Loads and starts simulations."""
 

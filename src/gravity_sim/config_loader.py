@@ -7,6 +7,7 @@ from random import Random
 from typing import Union
 from decimal import Decimal
 
+
 class YamlParser:
     """Class to convert random parameters in simulation config to values."""
 
@@ -85,7 +86,6 @@ class YamlParser:
         """
         return [int(Decimal(num)) for num in number_list]
 
-
     def random_vector(self, values: dict) -> list[int]:
         """Return a random vector in list form.
 
@@ -98,10 +98,7 @@ class YamlParser:
         self._check_random_parameters(values)
         max_values = YamlParser.parse_number_list(values["max"])
         min_values = YamlParser.parse_number_list(values["min"])
-        return [
-            self._rng.randint(min_values[0], max_values[0]),
-            self._rng.randint(min_values[1], max_values[1])
-        ]
+        return [self._rng.randint(min_values[0], max_values[0]), self._rng.randint(min_values[1], max_values[1])]
 
     def random_int(self, values) -> int:
         """Generate a random integer.

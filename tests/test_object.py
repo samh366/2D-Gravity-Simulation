@@ -4,6 +4,7 @@ from pytest import raises
 
 class TestObject:
     """Tests the Object class."""
+
     def test_from_dict_with_satellite(self):
         """An object with a satellite should be returned correctly.
 
@@ -22,9 +23,9 @@ class TestObject:
                     "mass": 5972,
                     "position": [500, -1000],
                     "velocity": [-5, 205],
-                    "color": [255, 100, 255]
+                    "color": [255, 100, 255],
                 }
-            ]
+            ],
         }
         actual_objects = Object.from_dict(dict_object)
         assert isinstance(actual_objects, list)
@@ -44,4 +45,3 @@ class TestObject:
         assert tuple(moon.position) == (1500, -2000)
         assert tuple(moon.velocity) == (5.1, 305)
         assert tuple(moon.color) == tuple(satellite_dict["color"])
-

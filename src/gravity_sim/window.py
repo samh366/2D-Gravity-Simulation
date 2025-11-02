@@ -114,7 +114,7 @@ class Window:
             case pygame.K_PERIOD:
                 self.change_simulation_speed(self.speed_factor)
             case pygame.K_COMMA:
-                self.change_simulation_speed(1/self.speed_factor)
+                self.change_simulation_speed(1 / self.speed_factor)
             case pygame.K_n:
                 self.toggle_show_names()
 
@@ -131,7 +131,7 @@ class Window:
         self.mouse_movement = pygame.mouse.get_rel()
         if pygame.mouse.get_pressed()[0]:
             self.focused_object = None
-            self.camera_pos -= Vector(self.mouse_movement[0], self.mouse_movement[1]*-1)
+            self.camera_pos -= Vector(self.mouse_movement[0], self.mouse_movement[1] * -1)
 
     def update_focused_object_index(self, amount: int) -> None:
         """Change the index of the focused object by an amount.
@@ -177,7 +177,7 @@ class Window:
             return
         for name, obj in zip(self.object_names, self.simulation.get_objects()):
             pos = self.scale_point(obj.get_position(), self.camera_pos).to_tuple()
-            self.screen.blit(name, (pos[0] - name.get_width() // 2, pos[1] - name.get_height()*1.8))
+            self.screen.blit(name, (pos[0] - name.get_width() // 2, pos[1] - name.get_height() * 1.8))
 
     def draw_point(self, position: Vector, color: Color) -> None:
         """Draw a point on the screen at the given position, centering the point on the screen.

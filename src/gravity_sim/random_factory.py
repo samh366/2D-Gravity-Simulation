@@ -1,8 +1,10 @@
 from random import Random
 from typing import Optional
 
+
 class RandomFactory:
     """Singleton class to store the random number generator."""
+
     _random = None
 
     def __init__(self):

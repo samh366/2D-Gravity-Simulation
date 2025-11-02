@@ -5,8 +5,10 @@ from typing import List
 from random import Random
 from decimal import Decimal
 
+
 class Simulation:
     """Class to simulate some gravitational bodies."""
+
     def __init__(
         self,
         name: str,

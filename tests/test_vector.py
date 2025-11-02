@@ -60,13 +60,7 @@ class TestVector:
             pytest.param(Vector(5, 2.7), Vector(0, 0), (5, 2.7)),
             pytest.param(Vector(5, 2.7), 10, (15, 12.7)),
         ],
-        ids=[
-            "integer addition",
-            "float addition",
-            "negative addition",
-            "zero addition",
-            "constant addition"
-        ]
+        ids=["integer addition", "float addition", "negative addition", "zero addition", "constant addition"],
     )
     def test_addition(self, a: Vector, b: Vector, expected: Vector):
         """Adding two vectors should return a new vector with correct values."""
@@ -90,7 +84,7 @@ class TestVector:
             "negative subtraction",
             "zero subtraction",
             "constant subtraction",
-        ]
+        ],
     )
     def test_subtraction(self, a: Vector, b: Vector, expected: Vector):
         """Subtracting two vectors should return a new vector with correct values."""
@@ -101,12 +95,10 @@ class TestVector:
 
     @pytest.mark.parametrize(
         "a, b, expected",
-        [
-            pytest.param(Vector(1, 1), Vector(1, 1), True)
-        ],
+        [pytest.param(Vector(1, 1), Vector(1, 1), True)],
         ids=[
             "Equal integers",
-        ]
+        ],
     )
     def test_eq(self, a: Vector, b: Vector, expected: bool):
         """Vectors with the same or close values should be equal."""

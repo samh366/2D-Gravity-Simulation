@@ -93,7 +93,10 @@ class Object:
 
     @classmethod
     def from_dict(
-        cls, data: dict, rel_pos: Vector = None, rel_vel: Vector = None,
+        cls,
+        data: dict,
+        rel_pos: Vector = None,
+        rel_vel: Vector = None,
     ) -> "Object":
         """Return an object from a dictionary.
 

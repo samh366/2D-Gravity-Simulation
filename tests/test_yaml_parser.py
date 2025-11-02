@@ -1,12 +1,14 @@
 from gravity_sim.config_loader import YamlParser
 from random import Random
 
+
 class TestYamlParser:
     """Test YamlParser class."""
+
     def test_random_int(self):
         """A random integer should be generated in a given range."""
         parser = YamlParser(Random(1))
-        values = {"max" : 1, "min" : 0}
+        values = {"max": 1, "min": 0}
         result = parser.random_int(values)
 
         assert result == 1 or result == 0
@@ -14,7 +16,7 @@ class TestYamlParser:
     def test_random_int_scientific(self):
         """A random integer should be generated in a given range."""
         parser = YamlParser(Random(1))
-        values = {"max" : 2e5, "min" : 2e4}
+        values = {"max": 2e5, "min": 2e4}
         result = parser.random_int(values)
 
         assert result <= 2e5 and result >= 2e4
@@ -22,7 +24,7 @@ class TestYamlParser:
     def test_random_vector(self):
         """A random integer should be generated in a given range."""
         parser = YamlParser(Random(2))
-        values = {"max" : [1, 3], "min" : [0, 2]}
+        values = {"max": [1, 3], "min": [0, 2]}
         result = parser.random_vector(values)
 
         assert isinstance(result, list)
@@ -35,10 +37,7 @@ class TestYamlParser:
         parser = YamlParser(Random(3))
         data = {
             "name": "Earth",
-            "mass": {
-                "max": 2,
-                "min": 1
-            },
+            "mass": {"max": 2, "min": 1},
             "position": [1, 1],
             "velocity": [0, 29_780],
             "color": [0, 100, 255],
@@ -79,10 +78,7 @@ class TestYamlParser:
         parser = YamlParser(Random(3))
         data = {
             "name": "Earth",
-            "mass": {
-                "min": 6,
-                "max": 7
-            },
+            "mass": {"min": 6, "max": 7},
             "position": {
                 "max": [0, 2],
                 "min": [-1, 2],
