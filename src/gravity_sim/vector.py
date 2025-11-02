@@ -72,13 +72,15 @@ class Vector:
         """Add a Vector or constant to this vector.
 
         Args:
-            other (Vector, float, int): A vector or float/int to add to this vector.
+            other: A vector or float/int to add to this vector.
 
         Returns:
             Vector: A vector with the new values.
         """
         if isinstance(other, Vector):
             return Vector(*tuple(a + b for a, b in zip(self, other)))
+        if isinstance(other, (float, int)):
+            other = Decimal(other)
         if isinstance(other, (Decimal)):
             return Vector(*tuple(a + other for a in self))
         raise ValueError(f"Addition not supported between {self.__class__} and {other.__class__}")
@@ -87,41 +89,47 @@ class Vector:
         """Subtract a Vector or constant from this vector.
 
         Args:
-            other (Vector, float, int): A vector or float/int to subtract from this vector.
+            other: A vector or float/int to subtract from this vector.
 
         Returns:
             Vector: A vector with the new values.
         """
         if isinstance(other, Vector):
             return Vector(*tuple(a - b for a, b in zip(self, other)))
+        if isinstance(other, (float, int)):
+            other = Decimal(other)
         if isinstance(other, (Decimal)):
             return Vector(*tuple(a - other for a in self))
         raise ValueError(f"Subtraction not supported between {self.__class__} and {other.__class__}")
 
-    def __truediv__(self, other: float) -> "Vector":
+    def __truediv__(self, other) -> "Vector":
         """Divide each value in the vector by a constant.
 
         Args:
-            other (float): _description_
+            other: The value to divide by.
 
         Returns:
-            Vector: _description_
+            Vector: The resultant vector.
         """
-        if isinstance(other, (Decimal)):
+        if isinstance(other, (float, int)):
+            other = Decimal(other)
+        if isinstance(other, Decimal):
             return Vector(*tuple(a / other for a in self))
 
         raise ValueError(f"Division not supported between {self.__class__} and {other.__class__}")
 
-    def __mul__(self, other: float) -> "Vector":
+    def __mul__(self, other) -> "Vector":
         """Multiply each value in the vector by a constant.
 
         Args:
-            other (float): _description_
+            other: The value to multiply by.
 
         Returns:
-            Vector: _description_
+            Vector: The resultant vector.
         """
-        if isinstance(other, (Decimal)):
+        if isinstance(other, (float, int)):
+            other = Decimal(other)
+        if isinstance(other, Decimal):
             return Vector(*tuple(a * other for a in self))
 
         raise ValueError(f"Multiplication not supported between {self.__class__} and {other.__class__}")
