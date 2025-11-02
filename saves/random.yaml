@@ -1,6 +1,7 @@
-name: "Solar System"
+name: "Random Earth Sized Planets"
 timestep: 5000
-steps: 8
+seed: 10
+steps: 32
 description: "A realistic solar system simulation"
 objects:
   - name: Sun
@@ -11,35 +12,36 @@ objects:
   - name: Earth
     mass: 5.972e24
     position:
-      max: [500_597_870_700, 0]
+      max: [200_597_870_700, 0]
       min: [50_597_870_700, 0]
     velocity: [0, 29_780]
-    color: [0, 100, 255]
   - name: Earth
     mass: 5.972e24
     position:
-      max: [500_597_870_700, 0]
+      max: [200_597_870_700, 0]
       min: [50_597_870_700, 0]
     velocity: [0, 29_780]
-    color: [0, 100, 255]
   - name: Earth
     mass: 5.972e24
     position:
-      max: [500_597_870_700, 0]
+      max: [200_597_870_700, 0]
       min: [50_597_870_700, 0]
     velocity: [0, 29_780]
-    color: [0, 100, 255]
   - name: Earth
     mass: 5.972e24
     position:
-      max: [500_597_870_700, 0]
+      max: [200_597_870_700, 0]
       min: [50_597_870_700, 0]
     velocity: [0, 29_780]
-    color: [0, 100, 255]
   - name: Earth
     mass: 5.972e24
     position:
-      max: [500_597_870_700, 0]
+      max: [200_597_870_700, 0]
       min: [50_597_870_700, 0]
     velocity: [0, 29_780]
-    color: [0, 100, 255]
+  - name: Earth
+    mass: 5.972e24
+    position:
+      max: [200_597_870_700, 0]
+      min: [50_597_870_700, 0]
+    velocity: [0, 29_780]
