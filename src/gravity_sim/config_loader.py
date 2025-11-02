@@ -141,7 +141,3 @@ class ConfigLoader:
         RandomFactory.set_random(data.get("seed", None))
         parser = YamlParser(RandomFactory.get_random())
         return Simulation.from_dict(parser.parse(data))
-
-    @staticmethod
-    def from_json() -> Simulation:
-        return NotImplementedError()
