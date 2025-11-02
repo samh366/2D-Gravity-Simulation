@@ -1,4 +1,4 @@
-import pytest
+from pytest import raises, mark
 from gravity_sim.object import Color
 
 
@@ -13,10 +13,11 @@ class TestColor:
         assert color.b == 30
 
     def test_iter(self):
+        """__iter__ should correctly iterate through the color object."""
         color = Color(1, 2, 3)
         assert list(color) == [1, 2, 3]
 
-    @pytest.mark.parametrize(
+    @mark.parametrize(
         "color, id, expected",
         [
             (Color(5, 6, 7), 0, 5),
@@ -31,7 +32,7 @@ class TestColor:
     def test_getitem_out_of_range(self):
         """Getting an item out of range should raise an IndexError."""
         color = Color(1, 2, 3)
-        with pytest.raises(IndexError):
+        with raises(IndexError):
             _ = color[3]
 
     def test_random_colour_range(self):
@@ -41,7 +42,7 @@ class TestColor:
         assert 50 <= color.g <= 200
         assert 50 <= color.b <= 200
 
-    @pytest.mark.parametrize(
+    @mark.parametrize(
         "input_val, expected",
         [
             ((10, 20, 30), (10, 20, 30)),
@@ -64,7 +65,7 @@ class TestColor:
 
     def test_from_iterable_non_iterable(self):
         """Calling from_iterable with a non-iterable should raise an error."""
-        with pytest.raises(ValueError):
+        with raises(ValueError):
             Color.from_iterable(123)
 
     def test_str(self):
