@@ -105,3 +105,34 @@ class TestYamlParser:
         assert len(data["velocity"]) == 2
         assert isinstance(data["velocity"][0], int)
         assert isinstance(data["velocity"][1], int)
+
+    def test_resolve_random_values_no_changes(self):
+        """No changes should be made when there are no random parameters."""
+        parser = YamlParser(Random(3))
+        data = {
+            "name": "Earth",
+            "mass": 100,
+            "position": [10, 5],
+            "velocity": [2, 3],
+            "color": [0, 100, 255],
+        }
+
+        parser.resolve_random_values(data)
+
+        # Check mass
+        assert isinstance(data["mass"], int)
+        assert data["mass"] == 100
+        # Check position
+        assert isinstance(data["position"], list)
+        assert len(data["position"]) == 2
+        assert isinstance(data["position"][0], int)
+        assert isinstance(data["position"][1], int)
+        assert data["position"][0] == 10
+        assert data["position"][1] == 5
+        # Check velocity
+        assert isinstance(data["velocity"], list)
+        assert len(data["velocity"]) == 2
+        assert isinstance(data["velocity"][0], int)
+        assert isinstance(data["velocity"][1], int)
+        assert data["velocity"][0] == 2
+        assert data["velocity"][1] == 3
