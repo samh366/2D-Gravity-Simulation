@@ -1,8 +1,8 @@
-from dataclasses import dataclass, field
 import random
-from gravity_sim.vector import Vector
-from typing import List
+from dataclasses import dataclass, field
 from decimal import Decimal
+
+from gravity_sim.vector import Vector
 
 
 @dataclass

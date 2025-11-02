@@ -112,7 +112,7 @@ class YamlParser:
         self._check_random_parameters(values)
         max_val = YamlParser.parse_number(values["max"])
         min_val = YamlParser.parse_number(values["min"])
-        return self._rng.randint(max_val, min_val)
+        return self._rng.randint(min_val, max_val)
 
 
 class ConfigLoader:

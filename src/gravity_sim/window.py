@@ -249,7 +249,7 @@ class Window:
         """Render each object's name onto a surface.
 
         Returns:
-            list[Surface]: _description_
+            list[Surface]: A list of surfaces, each surface containing an object's name.
         """
         names = []
         for obj in self.simulation.get_objects():

@@ -70,7 +70,7 @@ class TestYamlParser:
         assert isinstance(data["position"][0], int)
         assert isinstance(data["position"][1], int)
 
-        assert data["position"][0] == 0 or data["position"] == -1
+        assert data["position"][0] == 0 or data["position"][0] == -1
         assert data["position"][1] == 2
 
     def test_resolve_random_values_multiple(self):
