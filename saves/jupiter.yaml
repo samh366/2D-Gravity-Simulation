@@ -1,0 +1,86 @@
+name: "Jupiter"
+timestep: 500
+steps: 6
+description: "Jupiter and it's Moons"
+objects:
+  - name: Jupiter
+    mass: 1.898e27
+    position: [0, 0]
+    velocity: [0, 0]
+    color: [200, 170, 100]
+    satellites:
+    - name: Metis
+      mass: 9.56e16
+      position: [128_000_000, 0]
+      velocity: [0, 31_500]
+      color: [180, 180, 180]
+    - name: Adrastea
+      mass: 1.91e16
+      position: [129_000_000, 0]
+      velocity: [0, 31_400]
+      color: [170, 170, 170]
+    - name: Amalthea
+      mass: 2.08e18
+      position: [181_400_000, 0]
+      velocity: [0, 26_600]
+      color: [200, 180, 150]
+    - name: Thebe
+      mass: 7.77e17
+      position: [221_900_000, 0]
+      velocity: [0, 23_900]
+      color: [190, 170, 150]
+    - name: Io
+      mass: 8.9319e22
+      position: [421_700_000, 0]
+      velocity: [0, 17_334]
+      color: [255, 215, 100]
+    - name: Europa
+      mass: 4.7998e22
+      position: [671_034_000, 0]
+      velocity: [0, 13_740]
+      color: [200, 220, 255]
+    - name: Ganymede
+      mass: 1.4819e23
+      position: [1_070_412_000, 0]
+      velocity: [0, 10_880]
+      color: [180, 180, 180]
+    - name: Callisto
+      mass: 1.0759e23
+      position: [1_882_709_000, 0]
+      velocity: [0, 8_204]
+      color: [150, 140, 130]
+    - name: Themisto
+      mass: 7.5e15
+      position: [7_507_000_000, 0]
+      velocity: [0, 3_100]
+      color: [160, 160, 160]
+    - name: Leda
+      mass: 5.68e15
+      position: [11_094_000_000, 0]
+      velocity: [0, 2_390]
+      color: [170, 170, 170]
+    - name: Himalia
+      mass: 6.7e18
+      position: [11_460_000_000, 0]
+      velocity: [0, 2_290]
+      color: [180, 180, 180]
+    - name: Lysithea
+      mass: 7.77e16
+      position: [11_720_000_000, 0]
+      velocity: [0, 2_220]
+      color: [160, 160, 160]
+    - name: Elara
+      mass: 8.7e17
+      position: [11_740_000_000, 0]
+      velocity: [0, 2_210]
+      color: [170, 170, 170]
+    - name: Dia
+      mass: 9.0e15
+      position: [12_555_000_000, 0]
+      velocity: [0, 2_100]
+      color: [160, 160, 160]
+    - name: Carpo
+      mass: 1.2e16
+      position: [17_145_000_000, 0]
+      velocity: [0, 1_800]
+      color: [170, 170, 170]

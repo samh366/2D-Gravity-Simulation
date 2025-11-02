@@ -9,37 +9,37 @@ objects:
     position: [0, 0]
     velocity: [0, 0]
     color: [255, 204, 0]
-  - name: Earth
+  - name: Earth 1
     mass: 5.972e24
     position:
       max: [200_597_870_700, 0]
       min: [50_597_870_700, 0]
     velocity: [0, 29_780]
-  - name: Earth
+  - name: Earth 2
     mass: 5.972e24
     position:
       max: [200_597_870_700, 0]
       min: [50_597_870_700, 0]
     velocity: [0, 29_780]
-  - name: Earth
+  - name: Earth 3
     mass: 5.972e24
     position:
       max: [200_597_870_700, 0]
       min: [50_597_870_700, 0]
     velocity: [0, 29_780]
-  - name: Earth
+  - name: Earth 4
     mass: 5.972e24
     position:
       max: [200_597_870_700, 0]
       min: [50_597_870_700, 0]
     velocity: [0, 29_780]
-  - name: Earth
+  - name: Earth 5
     mass: 5.972e24
     position:
       max: [200_597_870_700, 0]
       min: [50_597_870_700, 0]
     velocity: [0, 29_780]
-  - name: Earth
+  - name: Earth 6
     mass: 5.972e24
     position:
       max: [200_597_870_700, 0]
