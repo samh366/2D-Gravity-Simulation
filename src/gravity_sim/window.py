@@ -1,10 +1,12 @@
-import pygame
-from gravity_sim.vector import Vector
-from gravity_sim.simulation import Simulation
-from gravity_sim.object import Color
-from pygame.event import Event
 from decimal import Decimal
+
+import pygame
 from pygame import Surface
+from pygame.event import Event
+
+from gravity_sim.object import Color
+from gravity_sim.simulation import Simulation
+from gravity_sim.vector import Vector
 
 
 class Window:

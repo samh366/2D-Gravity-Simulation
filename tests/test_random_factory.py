@@ -1,6 +1,8 @@
 from random import Random
-from gravity_sim.random_factory import RandomFactory
+
 from pytest import raises
+
+from gravity_sim.random_factory import RandomFactory
 
 
 class TestRandomFactory:

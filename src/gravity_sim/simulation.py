@@ -1,9 +1,10 @@
+import math
+from decimal import Decimal
+from random import Random
+from typing import List
+
 from gravity_sim.object import Object
 from gravity_sim.vector import Vector
-import math
-from typing import List
-from random import Random
-from decimal import Decimal
 
 
 class Simulation:

@@ -1,5 +1,6 @@
-from gravity_sim.config_loader import YamlParser
 from random import Random
+
+from gravity_sim.config_loader import YamlParser
 
 
 class TestYamlParser:

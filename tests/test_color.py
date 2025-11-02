@@ -1,4 +1,5 @@
-from pytest import raises, mark
+from pytest import mark, raises
+
 from gravity_sim.object import Color
 
 

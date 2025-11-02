@@ -1,6 +1,8 @@
-from gravity_sim.vector import Vector
-import pytest
 import math
+
+import pytest
+
+from gravity_sim.vector import Vector
 
 
 class TestVector:

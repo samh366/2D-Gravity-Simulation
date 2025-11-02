@@ -1,11 +1,13 @@
 import re
-from gravity_sim.simulation import Simulation
-from yaml import CSafeLoader, load
 from collections import deque
-from gravity_sim.random_factory import RandomFactory
+from decimal import Decimal
 from random import Random
 from typing import Union
-from decimal import Decimal
+
+from yaml import CSafeLoader, load
+
+from gravity_sim.random_factory import RandomFactory
+from gravity_sim.simulation import Simulation
 
 
 class YamlParser:
