@@ -1,0 +1,47 @@
+name: "Random Earth Sized Planets"
+timestep: 5000
+seed: 10
+steps: 32
+description: "A very random simulation"
+objects:
+  - name: Sun
+    mass: 1.989e30
+    position: [0, 0]
+    velocity: [0, 0]
+    color: [255, 204, 0]
+  - name: Earth 1
+    mass: 5.972e24
+    position:
+      max: [200_597_870_700, 0]
+      min: [50_597_870_700, 0]
+    velocity: [0, 29_780]
+  - name: Earth 2
+    mass: 5.972e24
+    position:
+      max: [200_597_870_700, 0]
+      min: [50_597_870_700, 0]
+    velocity: [0, 29_780]
+  - name: Earth 3
+    mass: 5.972e24
+    position:
+      max: [200_597_870_700, 0]
+      min: [50_597_870_700, 0]
+    velocity: [0, 29_780]
+  - name: Earth 4
+    mass: 5.972e24
+    position:
+      max: [200_597_870_700, 0]
+      min: [50_597_870_700, 0]
+    velocity: [0, 29_780]
+  - name: Earth 5
+    mass: 5.972e24
+    position:
+      max: [200_597_870_700, 0]
+      min: [50_597_870_700, 0]
+    velocity: [0, 29_780]
+  - name: Earth 6
+    mass: 5.972e24
+    position:
+      max: [200_597_870_700, 0]
+      min: [50_597_870_700, 0]
+    velocity: [0, 29_780]

@@ -1,0 +1,47 @@
+name: "Half Solar System"
+timestep: 2500
+steps: 8
+description: "A realistic half solar system simulation"
+objects:
+  - name: Sun
+    mass: 1.989e30
+    position: [0, 0]
+    velocity: [0, 0]
+    color: [255, 204, 0]
+  - name: Mercury
+    mass: 3.3011e23
+    position: [57_909_227_000, 0]
+    velocity: [0, 47_362]
+    color: [169, 169, 169]
+  - name: Venus
+    mass: 4.8675e24
+    position: [108_209_475_000, 0]
+    velocity: [0, 35_020]
+    color: [255, 223, 196]
+  - name: Earth
+    mass: 5.972e24
+    position: [149_597_870_700, 0]
+    velocity: [0, 29_780]
+    color: [0, 100, 255]
+    satellites:
+    - name: Moon
+      mass: 5.972e22
+      position: [363_300_000, 0]
+      velocity: [0, 1046]
+      color: [100, 100, 100]
+  - name: Mars
+    mass: 6.4171e23
+    position: [227_943_824_000, 0]
+    velocity: [0, 24_077]
+    color: [255, 80, 0]
+    satellites:
+    - name: Phobos
+      mass: 1.0659e16
+      position: [9_378_000, 0]
+      velocity: [0, 2_138]
+      color: [112, 78, 56]
+    - name: Deimos
+      mass: 1.4762e15
+      position: [23_460_000, 0]
+      velocity: [0, 1_351]
+      color: [160, 130, 110]

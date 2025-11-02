@@ -1,0 +1,89 @@
+name: "Solar System"
+timestep: 2500
+steps: 6
+description: "A realistic solar system simulation"
+objects:
+  - name: Sun
+    mass: 1.989e30
+    position: [0, 0]
+    velocity: [0, 0]
+    color: [255, 204, 0]
+  - name: Mercury
+    mass: 3.3011e23
+    position: [57_909_227_000, 0]
+    velocity: [0, 47_362]
+    color: [169, 169, 169]
+  - name: Venus
+    mass: 4.8675e24
+    position: [108_209_475_000, 0]
+    velocity: [0, 35_020]
+    color: [255, 223, 196]
+  - name: Earth
+    mass: 5.972e24
+    position: [149_597_870_700, 0]
+    velocity: [0, 29_780]
+    color: [0, 100, 255]
+    satellites:
+    - name: Moon
+      mass: 5.972e22
+      position: [363_300_000, 0]
+      velocity: [0, 1046]
+      color: [100, 100, 100]
+  - name: Mars
+    mass: 6.4171e23
+    position: [227_943_824_000, 0]
+    velocity: [0, 24_077]
+    color: [255, 80, 0]
+    satellites:
+    - name: Phobos
+      mass: 1.0659e16
+      position: [9_378_000, 0]
+      velocity: [0, 2_138]
+      color: [112, 78, 56]
+    - name: Deimos
+      mass: 1.4762e15
+      position: [23_460_000, 0]
+      velocity: [0, 1_351]
+      color: [160, 130, 110]
+  - name: Jupiter
+    mass: 1.898e27
+    position: [778_340_821_000, 0]
+    velocity: [0, 13_070]
+    color: [200, 170, 100]
+    satellites:
+    - name: Io
+      mass: 8.9319e22
+      position: [421_700_000, 0]
+      velocity: [0, 17_334]
+      color: [255, 215, 100]
+    - name: Europa
+      mass: 4.7998e22
+      position: [671_034_000, 0]
+      velocity: [0, 13_740]
+      color: [200, 220, 255]
+  - name: Saturn
+    mass: 5.683e26
+    position: [1_426_666_422_000, 0]
+    velocity: [0, 9_680]
+    color: [210, 200, 140]
+    satellites:
+    - name: Titan
+      mass: 1.3452e23
+      position: [1_221_870_000, 0]
+      velocity: [0, 5_570]
+      color: [200, 180, 120]
+  - name: Uranus
+    mass: 8.681e25
+    position: [2_870_658_186_000, 0]
+    velocity: [0, 6_800]
+    color: [100, 255, 255]
+  - name: Neptune
+    mass: 1.024e26
+    position: [4_498_396_441_000, 0]
+    velocity: [0, 5_430]
+    color: [70, 120, 255]
+  - name: Pluto
+    mass: 1.309e22
+    position: [5_906_376_272_000, 0]
+    velocity: [0, 4_740]
+    color: [200, 200, 220]

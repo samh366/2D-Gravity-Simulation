@@ -1,88 +1,153 @@
 # 2D-Gravity-Simulation
 
- A simple, customisable simulation of 2D gravity.
- Visualised using Pygame and configured using a Tkinter window.
- Includes the ability to save and load simulation configurations.
- Uses the all-pairs algorithm, every object is compared to every other object.
- This could be improved using the Barnes Hut algorithm, which I might implement in the future.
+A program to run customizable 2D simulations of gravity defined in YAML files.
 
- Given an array of gravitational objects treated as point masses, the simulation best estimates how these objects will interact with each other.
- Using the mass and positions of several points, the forces between them can be calculated and thus their resultant acceleration, which can be used to produce a simulation of their future movements.
+## Running
+To run the program using UV, clone the repo and run the below command:
 
-## Features
+`uv run gravity-sim saves/half_solar_system.yaml`
 
-1. Saving and loading simulation config
-2. Refocus which object is being viewed in the simulation
-3. View object names during the simulation
-4. Infinitely adjust the scale by scrolling up or down
-5. Adjustable units in the config menu
-6. Pausing/playing
+To run a simulation of half of the solar system.
 
-## Getting started
+Without UV, create a venv and install dependencies with the following commands:
 
-### Making objects
+```shell
+py -m venv .venv
+.venv/Scripts/Activate
+pip install .
+```
 
-To start the program, run [main.py](main.py)
+Then run an example simulation with:
 
-You will be presented with the simulation config screen.
+`python -m gravity_sim saves/half_solar_system.yaml`
 
-From here you can use the 'file' menu to load some pre-created simulation configurations, or you can click the 'add object' button to introduce your own object into the simulation.
+## Controls
+Certain keybinds can be used to control the simulation:
+- Space - Pause/play simulation
+- Right Arrow - Increment focused object
+- Left Arrow - Decrement focused object
+- Period - Increase speed
+- Comma - Decrease speed
+- N - Toggle names
 
-The default units are all SI units, and the required values are:
+## Example saves
+The program comes with some example saves to try out:
 
-- Mass
-- X and Y coordinates
-- Velocity in the X and Y direction
-- RGB color values
-- And a cool name
+1. `half_solar_system.yaml` - The sun and the first 4 planets and their moons.
+2. `solar_system.yaml` - The sun and all the plants in the solar system and most of their moons.
+3. `jupiter.yaml` - Jupiter and 15 of it's moons
+4. `random.yaml` - The sun and 6 earths at random positions
 
-You don't have to use the default units, for example the mass unit can be set to '10xSuns', so inputting a value of 1 will give you 10 solar masses instead of a kilogram.
+To run any of these saves, simply run the program and pass in the path to the config to use, e.g:
 
-Once you've added all your values and set up your simulation, click 'run' to start it.
+`uv run gravity-sim saves/jupiter.yaml`
 
-You can close the simulation at any time and be sent back to the config screen.
+## Creating a simulation
+Simulations are defined in `.yaml` files, here is an example save:
 
-### Config options
+```yaml
+name: "Earth and Moon"
+timestep: 2500
+steps: 16
+description: "Sun, earth and moon"
+objects:
+  - name: Sun
+    mass: 1.989e30
+    position: [0, 0]
+    velocity: [0, 0]
+    color: [255, 204, 0]
+  - name: Earth
+    mass: 5.972e24
+    position: [149_597_870_700, 0]
+    velocity: [0, 29_780]
+    color: [0, 100, 255]
+    satellites:
+    - name: Moon
+      mass: 5.972e22
+      position: [363_300_000, 0]
+      velocity: [0, 1046]
+      color: [100, 100, 100]
+```
+Several parameters are required:
 
-#### Time per frame
+- `name` - Name of the simulation.
+- `timestep` - The amount in seconds to advance the simulation each frame.
+- `steps` - The number of separate calculations to do for each frame. Higher = more accurate simulations but worse performance.
+- `description` - A description of the simulation
+- `objects` - The objects in the simulation
 
-The 'time per frame' box allows you to set the time that passes each frame of the simulation, setting it to 0.5 days means the simulation runs at 0.5 x 60fps = 30 days of simulation time per real world second.
+For each object:
+- `name` - Name of the object
+- `mass` - The mass of the object in kg, must be an integer or scientific number
+- `position` - The x, y position of the object in meters, must be integers or scientific notation
+- `velocity` - The x, y velocity of the object in metres/second, must be integers or scientific notation
+- `color` - RGB color of the object
+- `satellites` - Any objects defined here will **inherit** the position and velocity of the parent object. This makes it easier to define moons of an object. In this example the moon inherits the position and velocity of the earth, so only the moon's orbital speed and distance are required.
 
-#### Iterations per frame
+### Random values
+The program allows for mass, velocity, position and color to be randomised.
+Take the example configuration:
 
-The 'iterations per frame' box allows you to add in additional calculations between the value of time that you specified. For example, setting it to 10 means that instead of computing object X's position on day 0 and the jumping to day 10, it calculates its position and its interactions with all other objects on days 1 through to 10, and only visually displays the results of day 10.
+```yaml
+# random_sim.yaml
+name: "Random Earth Sized Planets"
+timestep: 5000
+seed: 10
+steps: 16
+description: "A random solar system simulation"
+objects:
+  - name: Sun
+    mass:
+      max: 1e30 # Random mass
+      min: 1e20
+    position: [0, 0]
+    velocity: [0, 0]
+  - name: Earth
+    mass: 5.972e24
+    position:
+      max: [200_597_870_700, 0] # Random position
+      min: [50_597_870_700, 0]
+    velocity:
+      max: [5e9, 3e5] # Random velocity
+      min: [-5e9, -2e2]
+```
 
-Setting this to a high value greatly increases the accuracy of the simulation, and can stop objects from 'flying off' under strong gravitational forces, but significantly increases the processing power needed, so only set it to a high value when you have a low number of objects.
+- `mass` - Can be randomised by providing a `max` and `min` value instead of an exact value. A random value will be generated between these values (inclusive)
+- `position` - Position can be randomised by providing the max x and y values, and the min x and y values to use. Note a value in a random vector can be fixed by just providing it twice for the max and min.
+- `velocity` - Similarly to position, velocity can be randomised in the same way
+- `color` - Color can be randomised by just excluding it. Random RGB values between 50-200 will be chosen.
 
-**TLDR; Time per frame = speed of simulation, iterations per frame = how accurate the simulation is**
+
+
+## Debugging
+An example launch.json config would look something like this:
+```json
+"configurations": [
+    {
+        "name": "Random.yaml",
+        "type": "debugpy",
+        "request": "launch",
+        "module": "gravity_sim",
+        "console": "integratedTerminal",
+        "args": [
+            "saves/[SAVE-TO-USE].yaml"
+        ],
+    }
+]
+```
 
 ## Images
 
-### Config Screen
-
-![Config Screen Image](imgs/config_screen.jpg)
-
 ### Simulation Screen
 
-![A 2D simulation of the plants in our inner solar system](imgs/simulation1.jpg)
+![A simulation of Jupiter and it's moons](imgs/jupiter.png)
 
-The planets in our inner Solar System
+Jupiter and it's moons.
 
-![A simulation of a busy solar system](imgs/simulation2.jpg)
+![An example simulation](imgs/sim1.png)
 
-A very busy solar system
-
-![A 2D simulation of the plants in our entire solar system](imgs/simulation3.jpg)
-
-A simulation of the planets in our solar system (- pluto)
+The solar system except the sun has zero mass.
 
 ## Requirements
-
-Python 3
-
-Pygame 2 and above
-
-## Thanks
-
-Big thanks to mp035 on Github for his scrollable frame widget in Tkinter.
-This code can be found in the [scrollableFrame.py](classes/scrollableFrame.py) file contained in the classes folder.
+- Python
+- UV (optional, makes it easier to run)
