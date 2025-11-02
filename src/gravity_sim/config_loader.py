@@ -4,6 +4,8 @@ from yaml import CSafeLoader, load
 from collections import deque
 from gravity_sim.random_factory import RandomFactory
 from random import Random
+from typing import Union
+from decimal import Decimal
 
 class YamlParser:
     """Class to convert random parameters in simulation config to values."""
@@ -59,6 +61,31 @@ class YamlParser:
         if "min" not in values:
             raise ValueError("'min' value not found when creating random value.")
 
+    @staticmethod
+    def parse_number(number: Union[int, float, str, Decimal]) -> int:
+        """Convert a float, int or string scientific number to an accurate integer.
+
+        Args:
+            number (Union[int, float, str, Decimal]): Some int, float, string or Decimal.
+
+        Returns:
+            int: The number as an integer.
+        """
+        return int(Decimal(number))
+
+    @staticmethod
+    def parse_number_list(number_list: list[Union[int, float, str, Decimal]]) -> list[int]:
+        """Convert some iterable of floats, ints, strings or decimals to a list of integers.
+
+        Args:
+            number_list (list[Union[int, float, str, Decimal]]): Some list of values.
+
+        Returns:
+            list[int]: The list of values as integers.
+        """
+        return [int(Decimal(num)) for num in number_list]
+
+
     def random_vector(self, values: dict) -> list[int]:
         """Return a random vector in list form.
 
@@ -69,8 +96,8 @@ class YamlParser:
             list[int]: A random vector as a list of integers.
         """
         self._check_random_parameters(values)
-        max_values = values["max"]
-        min_values = values["min"]
+        max_values = YamlParser.parse_number_list(values["max"])
+        min_values = YamlParser.parse_number_list(values["min"])
         return [
             self._rng.randint(min_values[0], max_values[0]),
             self._rng.randint(min_values[1], max_values[1])
@@ -86,7 +113,9 @@ class YamlParser:
             _type_: A random integer in the given bounds.
         """
         self._check_random_parameters(values)
-        return self._rng.randint(values["min"], values["max"])
+        max_val = YamlParser.parse_number(values["max"])
+        min_val = YamlParser.parse_number(values["min"])
+        return self._rng.randint(max_val, min_val)
 
 
 class ConfigLoader:
