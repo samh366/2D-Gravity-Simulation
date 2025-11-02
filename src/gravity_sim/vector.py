@@ -129,7 +129,7 @@ class Vector:
         """Right multplication."""
         return self.__mul__(other)
 
-    def to_tuple(self) -> tuple[int]:
+    def to_tuple(self) -> tuple[float]:
         """Return the Vector as a tuple.
 
         Returns:

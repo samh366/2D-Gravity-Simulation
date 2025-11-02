@@ -128,7 +128,7 @@ class TestVector:
         """Vectors should be able to be cast to tuples."""
         vector = Vector(1, 2)
 
-        actual = tuple(vector)
-        expected = (1, 2)
+        actual = vector.to_tuple()
+        expected = (1.0, 2.0)
 
         assert actual == expected
