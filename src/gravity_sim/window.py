@@ -4,6 +4,7 @@ from gravity_sim.simulation import Simulation
 from gravity_sim.object import Color
 from pygame.event import Event
 from decimal import Decimal
+from pygame import Surface
 
 
 class Window:
@@ -15,6 +16,7 @@ class Window:
         Args:
             simulation (Simulation): The simulation to start rendering.
         """
+        pygame.init()
         self.simulation = simulation
 
         self._fps = 60
@@ -30,6 +32,10 @@ class Window:
         self.focused_object = None
         self.zoom_factor = Decimal(1.2)
         self.speed_factor = Decimal(1.5)
+        self.show_names = False
+
+        self.font = pygame.font.SysFont("Calibri", 20)
+        self.object_names = self._generate_object_names()
 
     def run(self):
         """Start the window to render the simulation."""
@@ -45,21 +51,32 @@ class Window:
         Returns:
             bool: True if the simulation should continue, False otherwise.
         """
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return False
-            else:
-                self.handle_event(event)
+        if not self.handle_events():
+            return False
 
         self.screen.fill((0, 0, 0))
         self.move_camera()
         self.update_simulation()
         self.focus_camera()
         self.render_simulation()
+        self.render_object_names()
 
         pygame.display.update()
         self.clock.tick(self._fps)
 
+        return True
+
+    def handle_events(self) -> bool:
+        """Handle window events.
+
+        Returns:
+            bool: False if window should close, True otherwise.
+        """
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            else:
+                self.handle_event(event)
         return True
 
     def update_simulation(self):
@@ -87,16 +104,23 @@ class Window:
         Args:
             key (int): The key pressed.
         """
-        if key == pygame.K_SPACE:
-            self.toggle_pause()
-        if key == pygame.K_RIGHT:
-            self.update_focused_object_index(1)
-        if key == pygame.K_LEFT:
-            self.update_focused_object_index(-1)
-        if key == pygame.K_PERIOD:
-            self.change_simulation_speed(self.speed_factor)
-        if key == pygame.K_COMMA:
-            self.change_simulation_speed(1/self.speed_factor)
+        match key:
+            case pygame.K_SPACE:
+                self.toggle_pause()
+            case pygame.K_RIGHT:
+                self.update_focused_object_index(1)
+            case pygame.K_LEFT:
+                self.update_focused_object_index(-1)
+            case pygame.K_PERIOD:
+                self.change_simulation_speed(self.speed_factor)
+            case pygame.K_COMMA:
+                self.change_simulation_speed(1/self.speed_factor)
+            case pygame.K_n:
+                self.toggle_show_names()
+
+    def toggle_show_names(self) -> None:
+        """Toggle displaying names in the simulation."""
+        self.show_names = not self.show_names
 
     def toggle_pause(self) -> None:
         """Toggle the simulation between paused and unpaused."""
@@ -141,11 +165,19 @@ class Window:
         elif y < 0:
             self.zoom_out()
 
-    def render_simulation(self):
+    def render_simulation(self) -> None:
         """Draw all the objects on the screen."""
         for obj in self.simulation.get_objects():
             pos = self.scale_point(obj.get_position(), self.camera_pos)
             self.draw_point(pos, obj.color)
+
+    def render_object_names(self) -> None:
+        """Render object names."""
+        if not self.show_names:
+            return
+        for name, obj in zip(self.object_names, self.simulation.get_objects()):
+            pos = self.scale_point(obj.get_position(), self.camera_pos).to_tuple()
+            self.screen.blit(name, (pos[0] - name.get_width() // 2, pos[1] - name.get_height()*1.8))
 
     def draw_point(self, position: Vector, color: Color) -> None:
         """Draw a point on the screen at the given position, centering the point on the screen.
@@ -154,14 +186,15 @@ class Window:
             position (Vector): The position to draw the point.
             color (Color): Color of the point.
         """
-        width, height = self.screen.get_size()
-        position += Vector(width // 2, height // 2)
         pygame.draw.circle(surface=self.screen, color=tuple(color), center=position.to_tuple(), radius=8)
 
     def scale_point(self, point: Vector, refPoint: Vector) -> Vector:
-        """Scale a point to render to the screen.
+        """Scale a point to render it to the screen.
 
-        Also flips the y position to render to the screen.
+        Applies the current scale to the point.
+        Moves the point relative to the camera position,
+        Flips the y position.
+        Center the point on the screen.
 
         Args:
             point (Vector): The point to scale.
@@ -170,9 +203,12 @@ class Window:
         Returns:
             Vector: The scaled point.
         """
+        width, height = self.screen.get_size()
         point *= self.scale
         point -= refPoint
-        return Vector(point[0], point[1] * -1)
+        point = Vector(point[0], point[1] * -1)
+        point += Vector(width // 2, height // 2)
+        return point
 
     def zoom_in(self):
         """Increase the scale of the simulation."""
@@ -208,3 +244,14 @@ class Window:
         y_range = max(y_values) - min(y_values)
 
         return max(self.screen_size[0], self.screen_size[1]) / max(x_range, y_range)
+
+    def _generate_object_names(self) -> list[Surface]:
+        """Render each object's name onto a surface.
+
+        Returns:
+            list[Surface]: _description_
+        """
+        names = []
+        for obj in self.simulation.get_objects():
+            names.append(self.font.render(obj.name, True, tuple(obj.color)))
+        return names
