@@ -1,8 +1,0 @@
-from gravity_sim.config_loader import ConfigLoader
-from pytest import raises
-
-
-class TestConfigLoader:
-    def test_from_valid_yaml(self):
-        """A Config object should be returned from a valid YAML file."""
-        assert True
