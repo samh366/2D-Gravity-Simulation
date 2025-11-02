@@ -7,6 +7,7 @@ from gravity_sim.random_factory import RandomFactory
 
 class TestRandomFactory:
     """Test the vector class."""
+
     def test_init(self):
         """Calling init of RandomFactory should raise an error."""
         with raises(RuntimeError):
