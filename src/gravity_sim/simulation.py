@@ -5,6 +5,8 @@ from typing import List
 
 from gravity_sim.object import Object
 from gravity_sim.vector import Vector
+from gravity_sim.quadtree import QuadTree
+from collections import deque
 
 
 class Simulation:
@@ -36,8 +38,12 @@ class Simulation:
         self.description = description
         self.objects = objects
 
+        self.theta = 0.5
+
         if self.description is None:
             self.description = "A simulation."
+
+        self.last_quadtree = None
 
     @classmethod
     def from_dict(cls, dictionary: dict) -> "Simulation":
@@ -80,31 +86,90 @@ class Simulation:
         """Get the simulation's random number generator."""
         return self._random
 
-    def calculate_forces(self):
-        """Compute the forces between all the objects in the simulation."""
-        # TODO: Improve by only doing half
+    def calculate_forces(self) -> None:
+        """Compute the forces between all the objects in the simulation. O(n^2)."""
         for obj1 in self.objects:
             for obj2 in self.objects:
                 if obj1 is not obj2:
-                    self.calculate_force_between_objects(obj1, obj2)
+                    self.calculate_force_on_object(obj1, obj2.position, obj2.mass)
 
-    def calculate_force_between_objects(self, object1: Object, object2: Object) -> None:
-        """Apply the gravitational force of object 2 on object1.
+    def calc_forces_barnes_hut(self) -> None:
+        """Calculate the forces between all objects using the Barnes-Hut algorithm. O(nlogn)."""
+        if len(self.objects) < 2:
+            return
+        tree = self.build_quad_tree()
+
+        for obj in self.objects:
+            stack = deque([tree])
+            while stack:
+                node: QuadTree = stack.pop()
+                if node.value is obj:
+                    continue
+                elif isinstance(node.value, Object):
+                    self.calculate_force_on_object(obj, node.value.position, node.value.mass)
+                else:
+                    # Check if node is sufficiently far away such that we can approximate its mass
+                    distance = obj.position.distance(node.center_of_mass)
+                    distance = max(distance, 1)
+                    if (node.width * 2 / distance) < self.theta:
+                        self.calculate_force_on_object(obj, node.center_of_mass, node.mass)
+                    else:
+                        # Not far away enough, explore subtrees
+                        for subtree in node.subtrees.values():
+                            if subtree:
+                                stack.append(subtree)
+
+        self.last_quadtree = tree
+
+    def build_quad_tree(self) -> QuadTree:
+        """Construct a QuadTree from the objects in the Simulation.
+
+        Returns:
+            QuadTree: The created QuadTree
+        """
+        tree = QuadTree(center=Vector(0, 0), width=self.find_quad_tree_width())
+        for obj in self.objects:
+            tree.insert_object(obj)
+        return tree
+
+    def find_quad_tree_width(self) -> Decimal:
+        """Find the maximum distance in one dimension between two objects in the simulation.
+
+        Returns:
+            Decimal: The width that QuadTree should be.
+        """
+        max_x = float("-inf")
+        min_x = float("inf")
+        for obj in self.objects:
+            max_x = max(max_x, obj.position.x)
+            min_x = min(min_x, obj.position.x)
+
+        max_y = float("-inf")
+        min_y = float("inf")
+        for obj in self.objects:
+            max_y = max(max_y, obj.position.y)
+            min_y = min(min_y, obj.position.y)
+
+        return max(max_x - min_x, max_y - min_y)
+
+    def calculate_force_on_object(self, obj1: Object, obj2_pos: Vector, obj2_mass: Decimal) -> None:
+        """Calculate the gravitational force applied to an object.
 
         Args:
-            object1 (Object): Object to apply the force to.
-            object2 (Object): Object creating the force.
+            obj1 (Object): The object the force is applied to.
+            obj2_pos (Vector): The position of the other object.
+            obj2_mass (Decimal): The mass of the other object.
         """
-        distance = object2.position - object1.position
+        distance = obj2_pos - obj1.position
         sqrDistance = distance[0] ** 2 + distance[1] ** 2
         if math.isclose(sqrDistance, 0, rel_tol=1e-7):
             return
 
-        force = self.grav_constant * object1.mass * object2.mass / sqrDistance
+        force = self.grav_constant * obj1.mass * obj2_mass / sqrDistance
         theta = math.atan2(distance[1], distance[0])  # Calculate angle the force acts at
         force_vector = Vector.from_magnitude_theta(magnitude=force, theta=theta)
 
-        object1.add_force(force_vector)
+        obj1.add_force(force_vector)
 
     def move_objects(self, timestep: Decimal) -> None:
         """Move the objects in the simulation based on the forces acting on them.
@@ -120,7 +185,8 @@ class Simulation:
         """Step forward the simulation by one timestep."""
         timestep = Decimal(self.timestep / self.steps)
         for _ in range(self.steps):
-            self.calculate_forces()
+            # self.calculate_forces() # Old method
+            self.calc_forces_barnes_hut()
             self.move_objects(timestep)
 
     def run(self):

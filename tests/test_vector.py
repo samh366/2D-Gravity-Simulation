@@ -126,3 +126,21 @@ class TestVector:
         expected = (1.0, 2.0)
 
         assert actual == expected
+
+    def test_get_x(self):
+        """The property x of a vector should return the first value."""
+        vector = Vector(2, 3)
+        assert vector.x == 2
+
+    def test_get_y(self):
+        """The property y of a vector should return the second value."""
+        vector = Vector(2, 3)
+        assert vector.y == 3
+
+    def test_copy(self):
+        """Copying a Vector should return a different Vector object with the same values."""
+        vector1 = Vector(2, 3)
+        vector2 = vector1.copy()
+
+        assert vector1 == vector2
+        assert vector1 is not vector2

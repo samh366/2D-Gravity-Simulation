@@ -34,6 +34,24 @@ class Vector:
             )
         )
 
+    @property
+    def x(self) -> Decimal:
+        """X is the first item in the vector.
+
+        Returns:
+            Decimal: The first value in the vector.
+        """
+        return self.values[0]
+
+    @property
+    def y(self) -> Decimal:
+        """Y is the second item in the vector.
+
+        Returns:
+            Decimal: The second value in the vector.
+        """
+        return self.values[1]
+
     def __iter__(self):
         """Iterate through the values in the vector."""
         return self.values.__iter__()
@@ -145,3 +163,24 @@ class Vector:
             tuple[int]: The vector as a tuple of integers.
         """
         return tuple(float(v) for v in self.values)
+
+    def copy(self) -> "Vector":
+        """Return a copy of this Vector.
+
+        Returns:
+            Vector: The new vector with the same values.
+        """
+        return Vector(*self.values)
+
+    def distance(self, other: "Vector") -> Decimal:
+        """Calculate the distance from another Vector.
+
+        Assumes the vector is 2D.
+
+        Args:
+            other (Vector): The other vector.
+
+        Returns:
+            Decimal: The euclidian distance between the vectors.
+        """
+        return Decimal(math.sqrt((self.x - other.x) ** 2 + (self.y - other.y) ** 2))

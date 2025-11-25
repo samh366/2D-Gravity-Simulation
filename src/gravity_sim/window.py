@@ -1,5 +1,5 @@
+from collections import deque
 from decimal import Decimal
-
 from os import environ
 
 environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
@@ -39,6 +39,8 @@ class Window:
         self.zoom_factor = Decimal(1.2)
         self.speed_factor = Decimal(1.5)
         self.show_names = True
+        self.show_quadtree = False
+        self.show_center_masses = False
 
         self.font = pygame.font.SysFont("Calibri", 20)
         self.object_names = self._generate_object_names()
@@ -67,6 +69,7 @@ class Window:
         self.update_simulation()
         self.focus_camera()
         self.render_simulation()
+        self.render_quadtree()
         self.render_object_names()
 
         pygame.display.update()
@@ -125,6 +128,12 @@ class Window:
                 self.change_simulation_speed(1 / self.speed_factor)
             case pygame.K_n:
                 self.toggle_show_names()
+            case pygame.K_q:
+                self.toggle_show_quadtree()
+
+    def toggle_show_quadtree(self) -> None:
+        """Toggle displaying the quadtree."""
+        self.show_quadtree = not self.show_quadtree
 
     def toggle_show_names(self) -> None:
         """Toggle displaying names in the simulation."""
@@ -187,6 +196,32 @@ class Window:
             pos = self.scale_point(obj.get_position(), self.camera_pos).to_tuple()
             self.screen.blit(name, (pos[0] - name.get_width() // 2, pos[1] - name.get_height() * 1.8))
 
+    def render_quadtree(self) -> None:
+        """Draw the quadtree to the screen."""
+        if not self.show_quadtree or not self.simulation.last_quadtree:
+            return
+        stack = deque([self.simulation.last_quadtree])
+        while stack:
+            node = stack.pop()
+            center = self.scale_point(node.center, self.camera_pos)
+            self.draw_square(center, node.width * self.scale)
+
+            for subtree in node.subtrees.values():
+                if subtree:
+                    stack.append(subtree)
+
+    def draw_square(self, center: Vector, width: int) -> None:
+        """Draw a green square to the screen.
+
+        Args:
+            center (Vector): The center of the square.
+            width (Decimal): Half of the side length of one of the squares.
+        """
+        width = int(width)
+        rect = pygame.Rect(int(center.x) - width, int(center.y) - width, width * 2, width * 2)
+        rect.clip(self.screen.get_rect())
+        pygame.draw.rect(self.screen, (0, 255, 0), rect, width=1)
+
     def draw_point(self, position: Vector, color: Color) -> None:
         """Draw a point on the screen at the given position, centering the point on the screen.
 
@@ -194,7 +229,13 @@ class Window:
             position (Vector): The position to draw the point.
             color (Color): Color of the point.
         """
-        pygame.draw.circle(surface=self.screen, color=tuple(color), center=position.to_tuple(), radius=8)
+        radius = 8
+        width, height = self.screen.get_size()
+        if position.x < -radius or position.x > width + radius:
+            return
+        if position.y < -radius or position.y > height + radius:
+            return
+        pygame.draw.circle(surface=self.screen, color=tuple(color), center=position.to_tuple(), radius=radius)
 
     def scale_point(self, point: Vector, refPoint: Vector) -> Vector:
         """Scale a point to render it to the screen.
@@ -273,5 +314,6 @@ Right Arrow - Increment focused object
 Left Arrow - Decrement focused object
 Period - Increase speed
 Comma - Decrease speed
-N - Toggle names"""
+N - Toggle names
+Q - Toggle showing quadtree"""
         print(help)

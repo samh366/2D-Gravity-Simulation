@@ -1,6 +1,7 @@
 # 2D-Gravity-Simulation
 
-A program to run customizable 2D simulations of gravity defined in YAML files.
+A program to run customizable 2D simulations of gravity defined in YAML files with the Barnes-Hut algorithm for faster computation.
+[Barnest-Hut Algorithm](https://arborjs.org/docs/barnes-hut)
 
 ## Running
 To run the program using UV, clone the repo and run the below command:
@@ -29,6 +30,7 @@ Certain keybinds can be used to control the simulation:
 - Period - Increase speed
 - Comma - Decrease speed
 - N - Toggle names
+- Q - Toggle displaying the quadtree
 
 ## Example saves
 The program comes with some example saves to try out:
@@ -37,6 +39,7 @@ The program comes with some example saves to try out:
 2. `solar_system.yaml` - The sun and all the plants in the solar system and most of their moons.
 3. `jupiter.yaml` - Jupiter and 15 of it's moons
 4. `random.yaml` - The sun and 6 earths at random positions
+6. `galaxy.yaml` - Galaxy like simulation containing 80 bodies, serves as a stress test
 
 To run any of these saves, simply run the program and pass in the path to the config to use, e.g:
 
@@ -140,13 +143,13 @@ An example launch.json config would look something like this:
 
 ### Simulation Screen
 
-![A simulation of Jupiter and it's moons](imgs/jupiter.png)
-
-Jupiter and it's moons.
-
 ![An example simulation](imgs/sim1.png)
 
 The solar system except the sun has zero mass.
+
+![A simulation displaying a quadtree](imgs/quadtree.png)
+
+A simulation with the quadtree used for force calculations visualised.
 
 ## Requirements
 - Python
