@@ -43,6 +43,8 @@ class Simulation:
         if self.description is None:
             self.description = "A simulation."
 
+        self.last_quadtree = None
+
     @classmethod
     def from_dict(cls, dictionary: dict) -> "Simulation":
         """Return a simulation object from the provided data.
@@ -86,7 +88,6 @@ class Simulation:
 
     def calculate_forces(self) -> None:
         """Compute the forces between all the objects in the simulation. O(n^2)."""
-        # TODO: Improve by only doing half
         for obj1 in self.objects:
             for obj2 in self.objects:
                 if obj1 is not obj2:
@@ -109,13 +110,16 @@ class Simulation:
                 else:
                     # Check if node is sufficiently far away such that we can approximate its mass
                     distance = obj.position.distance(node.center_of_mass)
-                    if (node.width*2 / distance) < self.theta:
+                    distance = max(distance, 1)
+                    if (node.width * 2 / distance) < self.theta:
                         self.calculate_force_on_object(obj, node.center_of_mass, node.mass)
                     else:
                         # Not far away enough, explore subtrees
                         for subtree in node.subtrees.values():
                             if subtree:
                                 stack.append(subtree)
+
+        self.last_quadtree = tree
 
     def build_quad_tree(self) -> QuadTree:
         """Construct a QuadTree from the objects in the Simulation.
@@ -146,7 +150,7 @@ class Simulation:
             max_y = max(max_y, obj.position.y)
             min_y = min(min_y, obj.position.y)
 
-        return max(max_x-min_x, max_y-min_y)
+        return max(max_x - min_x, max_y - min_y)
 
     def calculate_force_on_object(self, obj1: Object, obj2_pos: Vector, obj2_mass: Decimal) -> None:
         """Calculate the gravitational force applied to an object.
