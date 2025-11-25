@@ -5,6 +5,7 @@ import pytest
 from gravity_sim.object import Object
 from gravity_sim.quadtree import QuadTree
 from gravity_sim.vector import Vector
+from gravity_sim.quadtree import Direction
 
 
 class TestQuadTree:
@@ -32,3 +33,24 @@ class TestQuadTree:
         assert tree.width == Decimal(50)
         for key, val in tree.corners.items():
             assert val is None
+
+    @pytest.mark.parametrize(
+        "direction, width, expected",
+        [
+            pytest.param(Direction.NW, 100, Vector(-50, 50)),
+            pytest.param(Direction.NE, 100, Vector(50, 50)),
+            pytest.param(Direction.SW, 100, Vector(-50, -50)),
+            pytest.param(Direction.SE, 100, Vector(50, -50)),
+            pytest.param(Direction.SE, 25, Vector(12.5, -12.5)),
+        ],
+        ids=["North west", "North east", "South west", "South east", "Floating point"],
+    )
+    def test_calc_new_center(self, direction: Direction, width: int, expected: Vector):
+        """New centers should be calculated correctly given the direction."""
+        tree = QuadTree(center=Vector(0, 0), width=width)
+        actual = tree.calc_new_center(direction)
+
+        assert actual == expected
+
+    def test_add_to_lower_quad_tree(self):
+        assert False
