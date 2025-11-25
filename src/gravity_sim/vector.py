@@ -183,4 +183,4 @@ class Vector:
         Returns:
             Decimal: The euclidian distance between the vectors.
         """
-        return Decimal(math.sqrt((self.x - other.x)**2 + (self.y - other.y)**2))
+        return Decimal(math.sqrt((self.x - other.x) ** 2 + (self.y - other.y) ** 2))

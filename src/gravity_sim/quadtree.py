@@ -7,13 +7,16 @@ from gravity_sim.vector import Vector
 
 class Direction(Enum):
     """Enum to store the 4 intercardinal directions."""
+
     NW = 1
     NE = 2
     SW = 3
     SE = 4
 
+
 class QuadTree:
     """A Quad-Tree implementation for the Barnes-Hut algorithm."""
+
     def __init__(self, center: Vector, width: Decimal):
         """Create a new empty quad tree."""
         self.center = center
@@ -27,7 +30,7 @@ class QuadTree:
             Direction.NW: None,
             Direction.NE: None,
             Direction.SW: None,
-            Direction.SE: None
+            Direction.SE: None,
         }
 
     def insert_object(self, obj: Object) -> None:
@@ -64,9 +67,9 @@ class QuadTree:
         m1 = self.mass
         m2 = obj.mass
 
-        total_mass =  m1 + m2
-        x = (x1*m1 + x2*m2) / total_mass
-        y = (y1*m1 + y2*m2) / total_mass
+        total_mass = m1 + m2
+        x = (x1 * m1 + x2 * m2) / total_mass
+        y = (y1 * m1 + y2 * m2) / total_mass
         self.center_of_mass = Vector(x, y)
         self.mass = total_mass
 
@@ -79,7 +82,7 @@ class QuadTree:
         """
         direction = self.determine_subtree(obj)
         if self.subtrees[direction] is None:
-            self.subtrees[direction] = QuadTree(center=self.calc_new_center(direction), width=self.width/2)
+            self.subtrees[direction] = QuadTree(center=self.calc_new_center(direction), width=self.width / 2)
         self.subtrees[direction].insert_object(obj)
 
     def determine_subtree(self, obj: Object) -> Direction:
