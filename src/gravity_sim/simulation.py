@@ -80,13 +80,17 @@ class Simulation:
         """Get the simulation's random number generator."""
         return self._random
 
-    def calculate_forces(self):
-        """Compute the forces between all the objects in the simulation."""
+    def calculate_forces(self) -> None:
+        """Compute the forces between all the objects in the simulation. O(n^2)."""
         # TODO: Improve by only doing half
         for obj1 in self.objects:
             for obj2 in self.objects:
                 if obj1 is not obj2:
                     self.calculate_force_between_objects(obj1, obj2)
+
+    def calc_forces_barnes_hut(self) -> None:
+        """Calculate the forces between all objects using the Barnes-Hut algorithm. O(nlogn)."""
+        
 
     def calculate_force_between_objects(self, object1: Object, object2: Object) -> None:
         """Apply the gravitational force of object 2 on object1.
