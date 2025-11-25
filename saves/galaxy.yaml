@@ -1,0 +1,410 @@
+name: "Galaxy Simulation"
+timestep: 200000
+steps: 1
+description: "Sun-centered galaxy with a lot of Earth-sized objects orbiting it"
+objects:
+  - name: Sun
+    mass: 1.989e30
+    position: [0, 0]
+    velocity: [0, 0]
+    color: [255, 204, 0]
+  - name: Planet_01
+    mass: 5.972e24
+    position: [100_000_000_000, 0]
+    velocity: [0, 29_900]
+    color: [100, 150, 255]
+  - name: Planet_02
+    mass: 5.972e24
+    position: [120_000_000_000, 0]
+    velocity: [0, 27_300]
+    color: [150, 100, 255]
+  - name: Planet_03
+    mass: 5.972e24
+    position: [140_000_000_000, 0]
+    velocity: [0, 25_350]
+    color: [255, 100, 150]
+  - name: Planet_04
+    mass: 5.972e24
+    position: [160_000_000_000, 0]
+    velocity: [0, 23_660]
+    color: [100, 255, 150]
+  - name: Planet_05
+    mass: 5.972e24
+    position: [180_000_000_000, 0]
+    velocity: [0, 22_230]
+    color: [255, 150, 100]
+  - name: Planet_06
+    mass: 5.972e24
+    position: [200_000_000_000, 0]
+    velocity: [0, 21_060]
+    color: [150, 255, 100]
+  - name: Planet_07
+    mass: 5.972e24
+    position: [220_000_000_000, 0]
+    velocity: [0, 20_150]
+    color: [100, 255, 255]
+  - name: Planet_08
+    mass: 5.972e24
+    position: [240_000_000_000, 0]
+    velocity: [0, 19_240]
+    color: [255, 100, 100]
+  - name: Planet_09
+    mass: 5.972e24
+    position: [260_000_000_000, 0]
+    velocity: [0, 18_460]
+    color: [200, 100, 255]
+  - name: Planet_10
+    mass: 5.972e24
+    position: [280_000_000_000, 0]
+    velocity: [0, 17_810]
+    color: [100, 200, 255]
+  - name: Planet_11
+    mass: 5.972e24
+    position: [300_000_000_000, 0]
+    velocity: [0, 17_160]
+    color: [255, 200, 100]
+  - name: Planet_12
+    mass: 5.972e24
+    position: [320_000_000_000, 0]
+    velocity: [0, 16_640]
+    color: [200, 255, 100]
+  - name: Planet_13
+    mass: 5.972e24
+    position: [340_000_000_000, 0]
+    velocity: [0, 16_120]
+    color: [100, 255, 200]
+  - name: Planet_14
+    mass: 5.972e24
+    position: [360_000_000_000, 0]
+    velocity: [0, 15_600]
+    color: [255, 100, 200]
+  - name: Planet_15
+    mass: 5.972e24
+    position: [380_000_000_000, 0]
+    velocity: [0, 15_210]
+    color: [180, 150, 255]
+  - name: Planet_16
+    mass: 5.972e24
+    position: [400_000_000_000, 0]
+    velocity: [0, 14_820]
+    color: [255, 180, 150]
+  - name: Planet_17
+    mass: 5.972e24
+    position: [420_000_000_000, 0]
+    velocity: [0, 14_430]
+    color: [150, 255, 180]
+  - name: Planet_18
+    mass: 5.972e24
+    position: [440_000_000_000, 0]
+    velocity: [0, 14_170]
+    color: [180, 255, 150]
+  - name: Planet_19
+    mass: 5.972e24
+    position: [460_000_000_000, 0]
+    velocity: [0, 13_910]
+    color: [150, 180, 255]
+  - name: Planet_20
+    mass: 5.972e24
+    position: [480_000_000_000, 0]
+    velocity: [0, 13_650]
+    color: [255, 150, 180]
+  - name: Planet_21
+    mass: 5.972e24
+    position: [500_000_000_000, 0]
+    velocity: [0, 13_390]
+    color: [120, 180, 255]
+  - name: Planet_22
+    mass: 5.972e24
+    position: [520_000_000_000, 0]
+    velocity: [0, 13_130]
+    color: [255, 120, 180]
+  - name: Planet_23
+    mass: 5.972e24
+    position: [540_000_000_000, 0]
+    velocity: [0, 12_870]
+    color: [180, 255, 120]
+  - name: Planet_24
+    mass: 5.972e24
+    position: [560_000_000_000, 0]
+    velocity: [0, 12_610]
+    color: [120, 255, 180]
+  - name: Planet_25
+    mass: 5.972e24
+    position: [580_000_000_000, 0]
+    velocity: [0, 12_350]
+    color: [180, 120, 255]
+  - name: Planet_26
+    mass: 5.972e24
+    position: [600_000_000_000, 0]
+    velocity: [0, 12_220]
+    color: [255, 180, 120]
+  - name: Planet_27
+    mass: 5.972e24
+    position: [620_000_000_000, 0]
+    velocity: [0, 11_960]
+    color: [140, 200, 255]
+  - name: Planet_28
+    mass: 5.972e24
+    position: [640_000_000_000, 0]
+    velocity: [0, 11_700]
+    color: [255, 140, 200]
+  - name: Planet_29
+    mass: 5.972e24
+    position: [660_000_000_000, 0]
+    velocity: [0, 11_570]
+    color: [200, 255, 140]
+  - name: Planet_30
+    mass: 5.972e24
+    position: [680_000_000_000, 0]
+    velocity: [0, 11_310]
+    color: [140, 255, 200]
+  - name: Planet_31
+    mass: 5.972e24
+    position: [700_000_000_000, 0]
+    velocity: [0, 11_180]
+    color: [200, 140, 255]
+  - name: Planet_32
+    mass: 5.972e24
+    position: [720_000_000_000, 0]
+    velocity: [0, 10_920]
+    color: [255, 200, 140]
+  - name: Planet_33
+    mass: 5.972e24
+    position: [740_000_000_000, 0]
+    velocity: [0, 10_790]
+    color: [160, 220, 255]
+  - name: Planet_34
+    mass: 5.972e24
+    position: [760_000_000_000, 0]
+    velocity: [0, 10_530]
+    color: [255, 160, 220]
+  - name: Planet_35
+    mass: 5.972e24
+    position: [780_000_000_000, 0]
+    velocity: [0, 10_400]
+    color: [220, 255, 160]
+  - name: Planet_36
+    mass: 5.972e24
+    position: [800_000_000_000, 0]
+    velocity: [0, 10_270]
+    color: [160, 255, 220]
+  - name: Planet_37
+    mass: 5.972e24
+    position: [820_000_000_000, 0]
+    velocity: [0, 10_140]
+    color: [220, 160, 255]
+  - name: Planet_38
+    mass: 5.972e24
+    position: [840_000_000_000, 0]
+    velocity: [0, 10_010]
+    color: [255, 220, 160]
+  - name: Planet_39
+    mass: 5.972e24
+    position: [860_000_000_000, 0]
+    velocity: [0, 9_880]
+    color: [130, 190, 255]
+  - name: Planet_40
+    mass: 5.972e24
+    position: [880_000_000_000, 0]
+    velocity: [0, 9_750]
+    color: [255, 130, 190]
+  - name: Planet_41
+    mass: 5.972e24
+    position: [900_000_000_000, 0]
+    velocity: [0, -9_600]
+    color: [100, 255, 100]
+  - name: Planet_42
+    mass: 5.972e24
+    position: [950_000_000_000, 0]
+    velocity: [0, -9_300]
+    color: [255, 100, 255]
+  - name: Planet_43
+    mass: 5.972e24
+    position: [1_000_000_000_000, 0]
+    velocity: [0, -9_000]
+    color: [100, 100, 255]
+  - name: Planet_44
+    mass: 5.972e24
+    position: [1_050_000_000_000, 0]
+    velocity: [0, -8_800]
+    color: [255, 255, 100]
+  - name: Planet_45
+    mass: 5.972e24
+    position: [1_100_000_000_000, 0]
+    velocity: [0, -8_600]
+    color: [100, 255, 255]
+  - name: Planet_46
+    mass: 5.972e24
+    position: [1_150_000_000_000, 0]
+    velocity: [0, -8_400]
+    color: [255, 100, 100]
+  - name: Planet_47
+    mass: 5.972e24
+    position: [1_200_000_000_000, 0]
+    velocity: [0, -8_200]
+    color: [200, 150, 255]
+  - name: Planet_48
+    mass: 5.972e24
+    position: [1_250_000_000_000, 0]
+    velocity: [0, -8_000]
+    color: [255, 200, 150]
+  - name: Planet_49
+    mass: 5.972e24
+    position: [1_300_000_000_000, 0]
+    velocity: [0, -7_900]
+    color: [150, 255, 200]
+  - name: Planet_50
+    mass: 5.972e24
+    position: [1_350_000_000_000, 0]
+    velocity: [0, -7_700]
+    color: [200, 255, 150]
+  - name: Planet_51
+    mass: 5.972e24
+    position: [1_400_000_000_000, 0]
+    velocity: [0, -7_600]
+    color: [150, 200, 255]
+  - name: Planet_52
+    mass: 5.972e24
+    position: [1_450_000_000_000, 0]
+    velocity: [0, -7_500]
+    color: [255, 150, 200]
+  - name: Planet_53
+    mass: 5.972e24
+    position: [1_500_000_000_000, 0]
+    velocity: [0, -7_300]
+    color: [180, 120, 200]
+  - name: Planet_54
+    mass: 5.972e24
+    position: [1_550_000_000_000, 0]
+    velocity: [0, -7_200]
+    color: [200, 180, 120]
+  - name: Planet_55
+    mass: 5.972e24
+    position: [1_600_000_000_000, 0]
+    velocity: [0, -7_100]
+    color: [120, 200, 180]
+  - name: Planet_56
+    mass: 5.972e24
+    position: [1_650_000_000_000, 0]
+    velocity: [0, -7_000]
+    color: [180, 200, 120]
+  - name: Planet_57
+    mass: 5.972e24
+    position: [1_700_000_000_000, 0]
+    velocity: [0, -6_900]
+    color: [120, 180, 200]
+  - name: Planet_58
+    mass: 5.972e24
+    position: [1_750_000_000_000, 0]
+    velocity: [0, -6_800]
+    color: [200, 120, 180]
+  - name: Planet_59
+    mass: 5.972e24
+    position: [1_800_000_000_000, 0]
+    velocity: [0, -6_700]
+    color: [140, 160, 220]
+  - name: Planet_60
+    mass: 5.972e24
+    position: [1_850_000_000_000, 0]
+    velocity: [0, -6_600]
+    color: [220, 140, 160]
+  - name: Planet_61
+    mass: 5.972e24
+    position: [1_900_000_000_000, 0]
+    velocity: [0, -6_500]
+    color: [160, 220, 140]
+  - name: Planet_62
+    mass: 5.972e24
+    position: [1_950_000_000_000, 0]
+    velocity: [0, -6_400]
+    color: [140, 220, 160]
+  - name: Planet_63
+    mass: 5.972e24
+    position: [2_000_000_000_000, 0]
+    velocity: [0, -6_300]
+    color: [160, 140, 220]
+  - name: Planet_64
+    mass: 5.972e24
+    position: [2_050_000_000_000, 0]
+    velocity: [0, -6_200]
+    color: [220, 160, 140]
+  - name: Planet_65
+    mass: 5.972e24
+    position: [2_100_000_000_000, 0]
+    velocity: [0, -6_100]
+    color: [110, 170, 230]
+  - name: Planet_66
+    mass: 5.972e24
+    position: [2_150_000_000_000, 0]
+    velocity: [0, -6_000]
+    color: [230, 110, 170]
+  - name: Planet_67
+    mass: 5.972e24
+    position: [2_200_000_000_000, 0]
+    velocity: [0, -5_900]
+    color: [170, 230, 110]
+  - name: Planet_68
+    mass: 5.972e24
+    position: [2_250_000_000_000, 0]
+    velocity: [0, -5_800]
+    color: [110, 230, 170]
+  - name: Planet_69
+    mass: 5.972e24
+    position: [2_300_000_000_000, 0]
+    velocity: [0, -5_700]
+    color: [170, 110, 230]
+  - name: Planet_70
+    mass: 5.972e24
+    position: [2_350_000_000_000, 0]
+    velocity: [0, -5_600]
+    color: [230, 170, 110]
+  - name: Planet_71
+    mass: 5.972e24
+    position: [2_400_000_000_000, 0]
+    velocity: [0, -5_500]
+    color: [130, 190, 240]
+  - name: Planet_72
+    mass: 5.972e24
+    position: [2_450_000_000_000, 0]
+    velocity: [0, -5_400]
+    color: [240, 130, 190]
+  - name: Planet_73
+    mass: 5.972e24
+    position: [2_500_000_000_000, 0]
+    velocity: [0, -5_300]
+    color: [190, 240, 130]
+  - name: Planet_74
+    mass: 5.972e24
+    position: [2_550_000_000_000, 0]
+    velocity: [0, -5_200]
+    color: [130, 240, 190]
+  - name: Planet_75
+    mass: 5.972e24
+    position: [2_600_000_000_000, 0]
+    velocity: [0, -5_100]
+    color: [190, 130, 240]
+  - name: Planet_76
+    mass: 5.972e24
+    position: [2_650_000_000_000, 0]
+    velocity: [0, -5_000]
+    color: [240, 190, 130]
+  - name: Planet_77
+    mass: 5.972e24
+    position: [2_700_000_000_000, 0]
+    velocity: [0, -4_900]
+    color: [150, 210, 250]
+  - name: Planet_78
+    mass: 5.972e24
+    position: [2_750_000_000_000, 0]
+    velocity: [0, -4_800]
+    color: [250, 150, 210]
+  - name: Planet_79
+    mass: 5.972e24
+    position: [2_800_000_000_000, 0]
+    velocity: [0, -4_700]
+    color: [210, 250, 150]
+  - name: Planet_80
+    mass: 5.972e24
+    position: [2_850_000_000_000, 0]
+    velocity: [0, -4_600]
+    color: [150, 250, 210]
