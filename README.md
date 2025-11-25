@@ -147,7 +147,7 @@ An example launch.json config would look something like this:
 
 The solar system except the sun has zero mass.
 
-![A simulation displaying a quadtree](imgs/quadtree.png)
+![A simulation displaying a quadtree](imgs/quadtree.PNG)
 
 A simulation with the quadtree used for force calculations visualised.
 
