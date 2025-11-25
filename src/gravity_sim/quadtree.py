@@ -55,7 +55,7 @@ class QuadTree:
         """Update the total mass and center of mass of the node.
 
         Args:
-            obj (Object): _description_
+            obj (Object): The object to include in the total mass calculation.
         """
         if self.mass == 0:
             self.mass = obj.mass
