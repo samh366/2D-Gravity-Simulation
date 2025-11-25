@@ -136,3 +136,11 @@ class TestVector:
         """The property y of a vector should return the second value."""
         vector = Vector(2, 3)
         assert vector.y == 3
+
+    def test_copy(self):
+        """Copying a Vector should return a different Vector object with the same values."""
+        vector1 = Vector(2, 3)
+        vector2 = vector1.copy()
+
+        assert vector1 == vector2
+        assert vector1 is not vector2
