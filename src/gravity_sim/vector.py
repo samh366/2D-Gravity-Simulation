@@ -34,6 +34,24 @@ class Vector:
             )
         )
 
+    @property
+    def x(self) -> Decimal:
+        """X is the first item in the vector.
+
+        Returns:
+            Decimal: The first value in the vector.
+        """
+        return self.values[0]
+
+    @property
+    def y(self) -> Decimal:
+        """Y is the second item in the vector.
+
+        Returns:
+            Decimal: The second value in the vector.
+        """
+        return self.values[1]
+
     def __iter__(self):
         """Iterate through the values in the vector."""
         return self.values.__iter__()
