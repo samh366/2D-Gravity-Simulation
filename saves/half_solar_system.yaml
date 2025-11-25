@@ -1,6 +1,6 @@
 name: "Half Solar System"
 timestep: 2500
-steps: 8
+steps: 6
 description: "A realistic half solar system simulation"
 objects:
   - name: Sun

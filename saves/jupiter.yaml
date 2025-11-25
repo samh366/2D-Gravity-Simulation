@@ -1,6 +1,6 @@
 name: "Jupiter"
 timestep: 500
-steps: 8
+steps: 6
 description: "Jupiter and it's Moons"
 objects:
   - name: Jupiter

@@ -185,7 +185,7 @@ class Simulation:
         """Step forward the simulation by one timestep."""
         timestep = Decimal(self.timestep / self.steps)
         for _ in range(self.steps):
-            # self.calculate_forces()
+            # self.calculate_forces() # Old method
             self.calc_forces_barnes_hut()
             self.move_objects(timestep)
 
